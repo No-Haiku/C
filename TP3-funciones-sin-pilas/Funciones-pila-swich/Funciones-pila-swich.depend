@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1490112217 source:c:\users\haiku\desktop\c\tp3-funciones-sin-pilas\funciones-pila-swich\pila.c
+	"pila.h"
+
+1490112217 c:\users\haiku\desktop\c\tp3-funciones-sin-pilas\funciones-pila-swich\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1618722732 source:c:\users\haiku\desktop\c\tp3-funciones-sin-pilas\funciones-pila-swich\main.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"pila.h"
+
+1490112217 source:c:\users\gianf\onedrive\escritorio\c\c\tp3-funciones-sin-pilas\funciones-pila-swich\pila.c
+	"pila.h"
+
+1490112217 c:\users\gianf\onedrive\escritorio\c\c\tp3-funciones-sin-pilas\funciones-pila-swich\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1618960293 source:c:\users\gianf\onedrive\escritorio\c\c\tp3-funciones-sin-pilas\funciones-pila-swich\main.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	"pila.h"
+

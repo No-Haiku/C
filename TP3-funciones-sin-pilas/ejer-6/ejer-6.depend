@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1618710890 source:c:\users\haiku\desktop\c\tp3-funciones-sin-pilas\ejer-6\main.c
+	<stdio.h>
+	<stdlib.h>
+

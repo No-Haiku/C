@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1490112217 source:c:\users\haiku\desktop\c\funciones\pila.c
+	"pila.h"
+
+1490112217 c:\users\haiku\desktop\c\funciones\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1618353361 source:c:\users\haiku\desktop\c\funciones\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+

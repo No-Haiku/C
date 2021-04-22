@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1490112217 source:c:\users\gianf\onedrive\escritorio\utn 2021\pilas-ejer\pila.c
+	"pila.h"
+
+1490112217 c:\users\gianf\onedrive\escritorio\utn 2021\pilas-ejer\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1617151889 source:c:\users\gianf\onedrive\escritorio\utn 2021\pilas-ejer\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+

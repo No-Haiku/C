@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1616263651 source:c:\users\gianf\onedrive\escritorio\utn 2021\pasar_de_negativo_a_positivo\main.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+

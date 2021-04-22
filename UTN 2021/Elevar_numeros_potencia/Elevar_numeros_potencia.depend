@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1616262816 source:c:\users\gianf\onedrive\escritorio\utn 2021\elevar_numeros_potencia\main.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+

@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1617410618 source:c:\users\gianf\onedrive\escritorio\utn 2021\pilas-ejercicios\practico2-ejer1\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+
+1490112217 c:\users\gianf\onedrive\escritorio\utn 2021\pilas-ejercicios\practico2-ejer1\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1490112217 source:c:\users\gianf\onedrive\escritorio\utn 2021\pilas-ejercicios\practico2-ejer1\pila.c
+	"pila.h"
+

@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1620861299 source:c:\users\gianf\onedrive\escritorio\c\tp matrices 4.1\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

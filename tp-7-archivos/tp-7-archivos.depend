@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1622496049 source:c:\users\gianf\onedrive\escritorio\c\c\tp-7-archivos\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+
+1490112217 source:c:\users\gianf\onedrive\escritorio\c\c\tp-7-archivos\pila.c
+	"pila.h"
+
+1490112217 c:\users\gianf\onedrive\escritorio\c\c\tp-7-archivos\pila.h
+	<stdio.h>
+	<malloc.h>
+

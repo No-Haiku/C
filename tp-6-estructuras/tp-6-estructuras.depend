@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1622085485 source:c:\users\gianf\onedrive\escritorio\c\c\tp-6-estructuras\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

@@ -30,7 +30,7 @@ void cargaNombreYapellido(char archivo[]);
 void muestraArchivo(char archivo[]);
 int cargaDatosCliente(char archivo[],int validos);
 void muestaArchivoClientes(char archivo[]);
-void darDeBaja(char archivo[],int nroClnt);
+void modificaCliente(char archivo[],int nroClnt);
 int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
@@ -40,7 +40,7 @@ int main()
     // printf("validos %d\n",vldsCrgaClnt);
     printf("muestra clientes\n");
     muestaArchivoClientes("clientes.bin");
-    //darDeBaja("clientes.bin",1);
+    modificaCliente("clientes.bin",1);
     /// muestaArchivoClientes("clientes.bin");
     return 0;
 }
@@ -191,7 +191,7 @@ void muestaArchivoClientes(char archivo[])
     }
 }
 
-void darDeBaja(char archivo[],int nroClnt)
+void modificaCliente(char archivo[],int nroClnt)
 {
 
     stCliente a;
@@ -200,7 +200,7 @@ void darDeBaja(char archivo[],int nroClnt)
     int opcion=0;
     if(archi)
     {
-        printf("Precione 1 para alta o 2 para baja\n");
+        printf("\t\t\nPara modificar precione\n*1 para alta\n*2 para baja\n*3 Nombre\n*4 para apellido\n*5 D.N.I\n*6 para Email\n*7 para domicilio\n*8 para movil\n");
         scanf("%d",&opcion);
         while(fread(&a,sizeof(stCliente),1,archi)>0)
         {
@@ -214,6 +214,36 @@ void darDeBaja(char archivo[],int nroClnt)
                     break;
                 case 2:
                     a.baja=-1;
+                    break;
+                case 3:
+                    printf("Ingrese Nombre\n");
+                    scanf("%s",a.nombre);
+                    break;
+                case 4:
+                    printf("Ingrese apellido\n");
+                    scanf("%s",a.apellido);
+                    break;
+                case 5:
+                    printf("Ingrese D.N.I\n");
+                    scanf("%s",a.dni);
+                    break;
+                case 6:
+                    printf("Ingrese email\n");
+                    scanf("%s",a.email);
+                    if(strchr(a.email, '@' )==NULL)
+                    {
+                        printf("Email\n");
+                        scanf("%s",a.email);
+                        fflush(stdin);
+                    }
+                    break;
+                case 7:
+                    printf("Ingrese domicilio\n");
+                    scanf("%s",a.domicilio);
+                    break;
+                case 8:
+                    printf("Ingrese movil\n");
+                    scanf("%s",a.movil);
                     break;
                 }
 

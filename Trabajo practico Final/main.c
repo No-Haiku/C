@@ -306,10 +306,11 @@ void filtraClientes(char archivo[],char archivoConsumo)
                 {
 
                     muestraUnCliente(a);
-                if(datoConsumo=='s'){
-                    printf("********Consumos*********\n");
-                    muestraUnConsumo(archivoConsumo,a.id);
-                }
+                    if(datoConsumo=='s')
+                    {
+                        printf("********Consumos*********\n");
+                        muestraUnConsumo(archivoConsumo,a.id);
+                    }
                 }
             }
             system("pause");
@@ -468,7 +469,8 @@ void modificaConsumo(char archivo[],int nroClnt)
 
 }
 ///MUESTRA CONSUMOS
-void muestraUnConsumo(stConsumos a){
+void muestraUnConsumo(stConsumos a)
+{
     printf("ID -%d-\n",a.id);
     printf("Numero de cliente: %d\n",a.idCliente);
     printf("Anio: %d\n",a.anio);
@@ -479,24 +481,74 @@ void muestraUnConsumo(stConsumos a){
 }
 /// MUESTRA CONSUMOS SEGUN FILTRO
 void muestraConsumoConFiltro(char consumos[],stCliente b)
-{   FILE *archi=fopen(consumos,"rb");
+{
+    FILE *archi=fopen(consumos,"rb");
     stConsumos a;
 
-if(archi){
-    int opcion=0;
-    printf("Fliltro\n*ID\n*Anio\n*Mes\n*Dia\n*Consumo\n*Alta\n*Baja\n");
-    switch(opcion){
-case 1:
-    while(fread(&a,sizeof(stConsumos),1,archi)>0){
-    if(a.idCliente==b.id){
-    muestraUnConsumo(a);
-    }
+    if(archi)
+    {
+        int opcion=0;
+        int opcion2=0;
+        printf("Fliltro\n*ID\n*Anio-1\n*Mes-2\n*Dia-3\n*Consumo-4\n*Alta-5\n*Baja-6\n");
+        switch(opcion)
+        {
+        case 1:
+            while(fread(&a,sizeof(stConsumos),1,archi)>0)
+            {
+                if(a.idCliente==b.id)
+                {
+                    muestraUnConsumo(a);
+                }
 
-    }
-    break;
-    }
+            }
+            break;
+        case 2:
 
-fclose(archi);
-}
+            printf("Busca por\n*Anio-1\n*Rango de Anios-2");
+            scanf("%d",&opcion2);
+            switch(opcion2)
+            {
+            case 1:
+                printf("Ingrese Anio a buscar\n");
+                int dato=0;
+                scanf("%d",&dato);
+                while(fread(&a,sizeof(stConsumos),1,archi))
+                {
+                    if(a.anio==dato&&a.idCliente==b.id)
+                    {
+                        muestraUnConsumo(a);
+                    }
+                }
+                break;
+            case 2:
+                dato=0;
+                int dato2=0;
+                printf("Ingrese rango de anios\n");
+                printf("De...\n");
+                scanf("%d",&dato);
+                printf("Hasta...\n");
+                scanf("%d",&dato2);
+                if(dato>dato2){
+                printf("Ingrese rango de anios\n");
+                printf("De...\n");
+                scanf("%d",&dato);
+                printf("Hasta...\n");
+                scanf("%d",&dato2);
+                }
+                while(fread(&a,sizeof(stConsumos),1,archi))
+                {
+                    if(a.anio<=dato2&&a.anio>=dato&&a.idCliente==b.id)
+                    {
+                        muestraUnConsumo(a);
+                    }
+                }
+                break;
+            }
+
+            break;
+        }
+
+        fclose(archi);
+    }
 }
 ///CARGA CONSUMOS

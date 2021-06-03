@@ -32,7 +32,8 @@ int cargaDatosCliente(char archivo[],int validos);
 void muestaArchivoClientes(char archivo[]);
 void modificaCliente(char archivo[],int nroClnt);
 void muestraUnCliente(stCliente a);
-void filtraClientes(char archivo[]);
+void filtraClientes(char archivo[],char archivoConsumo);
+void modificaConsumo(char archivo[],int nroClnt);
 int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
@@ -45,7 +46,7 @@ int main()
     ///modificaCliente("clientes.bin",1);
     /// muestaArchivoClientes("clientes.bin");
     printf("\nFiltra clientes\n");
-    filtraClientes("clientes.bin");
+    filtraClientes("clientes.bin","consumo.bin");
     return 0;
 }
 
@@ -276,7 +277,7 @@ void muestraUnCliente(stCliente a)
     printf("Estado %d\n",a.baja);
 }
 
-void filtraClientes(char archivo[])
+void filtraClientes(char archivo[],char archivoConsumo)
 {
     stCliente a;
     int opcion;
@@ -291,18 +292,24 @@ void filtraClientes(char archivo[])
 
         char mander[50];
         int dato;
+        char datoConsumo=0;
         switch(opcion)
         {
         case 1:
             printf("Ingrese el numero de cliente a buscar\n");
             scanf("%d",&dato);
+            printf("Ver consumo? precione s para si\n");
+            datoConsumo=getch();
             while(fread(&a,sizeof(stCliente),1,archi)>0)
             {
                 if(a.nroCliente== dato)
                 {
 
                     muestraUnCliente(a);
-
+                if(datoConsumo=='s'){
+                    printf("********Consumos*********\n");
+                    muestraUnConsumo(archivoConsumo,a.id);
+                }
                 }
             }
             system("pause");
@@ -406,3 +413,90 @@ void filtraClientes(char archivo[])
     }
 
 }
+
+void modificaConsumo(char archivo[],int nroClnt)
+{
+
+    stConsumos a;
+    FILE *archi=fopen(archivo,"r+b");
+    int cont=0;
+    int opcion=0;
+    if(archi)
+    {
+        printf("\t\t\nPara modificar precione\n*1 para alta\n*2 para baja\n*3 para anio\n*4 para mes\n*5 para dia\n*6 para datos consumidos");
+        scanf("%d",&opcion);
+        while(fread(&a,sizeof(stConsumos),1,archi)>0)
+        {
+            if(a.idCliente==nroClnt)
+            {
+
+                switch(opcion)
+                {
+                case 1:
+                    a.baja=0;
+                    break;
+                case 2:
+                    a.baja=-1;
+                    break;
+                case 3:
+                    printf("Ingrese anio\n");
+                    scanf("%d",a.anio);
+                    break;
+                case 4:
+                    printf("Ingrese mes\n");
+                    scanf("%d",a.mes);
+                    break;
+                case 5:
+                    printf("Ingrese dia\n");
+                    scanf("%d",a.dia);
+                    break;
+                case 6:
+                    printf("Ingrese datos consumidos /mb\n");
+                    scanf("%d",a.datosConsumidos);
+
+
+                }
+
+                fseek(archi,-1*sizeof(stConsumos),SEEK_CUR);
+                fwrite(&a,sizeof(stConsumos),1,archi);
+                cont++;
+                fseek(archi,sizeof(stConsumos)*cont,SEEK_SET);
+            }
+        }
+        fclose(archi);
+    }
+
+}
+///MUESTRA CONSUMOS
+void muestraUnConsumo(stConsumos a){
+    printf("ID -%d-\n",a.id);
+    printf("Numero de cliente: %d\n",a.idCliente);
+    printf("Anio: %d\n",a.anio);
+    printf("Mes: %d\n",a.mes);
+    printf("Dia: %d\n",a.dia);
+    printf("Datos consumidos %d mb\n",a.datosConsumidos);
+    printf("Estado %d\n",a.baja);
+}
+/// MUESTRA CONSUMOS SEGUN FILTRO
+void muestraConsumoConFiltro(char consumos[],stCliente b)
+{   FILE *archi=fopen(consumos,"rb");
+    stConsumos a;
+
+if(archi){
+    int opcion=0;
+    printf("Fliltro\n*ID\n*Anio\n*Mes\n*Dia\n*Consumo\n*Alta\n*Baja\n");
+    switch(opcion){
+case 1:
+    while(fread(&a,sizeof(stConsumos),1,archi)>0){
+    if(a.idCliente==b.id){
+    muestraUnConsumo(a);
+    }
+
+    }
+    break;
+    }
+
+fclose(archi);
+}
+}
+///CARGA CONSUMOS

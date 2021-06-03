@@ -32,7 +32,7 @@ int cargaDatosCliente(char archivo[],int validos);
 void muestaArchivoClientes(char archivo[]);
 void modificaCliente(char archivo[],int nroClnt);
 void muestraUnCliente(stCliente a);
-void filtraClientes(char archivo[]);
+void filtraClientes(char archivo);
 int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
@@ -276,45 +276,16 @@ void muestraUnCliente(stCliente a)
     printf("Estado %d\n",a.baja);
 }
 
-void filtraClientes(char archivo[]){
+void filtraClientes(char archivo){
     stCliente a;
-        int opcion;
-
     FILE *archi=fopen(archivo,"rb");
-
-    printf("ingrese una opcion\n");
-    scanf("%d",&opcion);
-
+    int dato=2;
     if(archi){
-
-        char mander[50];
-    int dato;
-        switch(opcion){
-    case 1:
-                printf("Ingrese el numero de cliente a buscar\n");
-                scanf("%d",&dato);
-                while(fread(&a,sizeof(stCliente),1,archi)>0){
-                if(a.nroCliente== dato){
-
-                muestraUnCliente(a);
-
-            }
-                }
-                 system("cls");
-        break;
-    case 2:
-        fflush(stdin);
-        printf("Ingrese nombre de cliente a buscar\n");
-        fflush(stdin);
-        scanf("%s",mander);
         while(fread(&a,sizeof(stCliente),1,archi)>0){
-        if(strcmp(a.nombre,mander)==0){
-            muestraUnCliente(a);
+            if(a.nroCliente== dato){
+                muestraUnCliente(a);
+            }
         }
-        }
-        break;
-        }
-
 
     fclose(archi);
     }

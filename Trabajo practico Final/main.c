@@ -30,15 +30,18 @@ void cargaNombreYapellido(char archivo[]);
 void muestraArchivo(char archivo[]);
 int cargaDatosCliente(char archivo[],int validos);
 void muestaArchivoClientes(char archivo[]);
+void darDeBaja(char archivo[],int nroClnt);
 int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
-   // muestraArchivo("nomb_ape.bin");
+    // muestraArchivo("nomb_ape.bin");
     int vldsCrgaClnt=0;
     //vldsCrgaClnt=cargaDatosCliente("clientes.bin",vldsCrgaClnt);
-   // printf("validos %d\n",vldsCrgaClnt);
+    // printf("validos %d\n",vldsCrgaClnt);
     printf("muestra clientes\n");
     muestaArchivoClientes("clientes.bin");
+    //darDeBaja("clientes.bin",1);
+    /// muestaArchivoClientes("clientes.bin");
     return 0;
 }
 
@@ -110,7 +113,8 @@ int cargaDatosCliente(char archivo[],int validos)
 
     if(archi)
     {
-        if(comprueba>0){///si el archivo ya existia le asigna el valor del id a validos
+        if(comprueba>0) ///si el archivo ya existia le asigna el valor del id a validos
+        {
             validos=a.id;
         }
         while(opcion!=27)
@@ -153,33 +157,73 @@ int cargaDatosCliente(char archivo[],int validos)
     return validos;
 }
 
-void muestaArchivoClientes(char archivo[]){
+void muestaArchivoClientes(char archivo[])
+{
 
     int comp=fopen(archivo,"r");
     stCliente a;
 
-    if(comp>0){
-    FILE *archi=fopen(archivo,"rb");
-    if(archi){
-        while(fread(&a,sizeof(stCliente),1,archi)>0){
-            printf("ID -%d-\n",a.id);
-            printf("Numero de cliente: %d\n",a.nroCliente);
-            printf("Nombre: %s\n",a.nombre);
-            printf("Apellido: %s\n",a.apellido);
-            printf("D.N.I: %s\n",a.dni);
-            printf("Email: %s\n",a.email);
-            printf("Domicilio: %s\n",a.domicilio);
-            printf("Movil: %s\n",a.movil);
-            if(a.baja==0){
-                printf("Activo\n");
-            }else{
-                printf("En Baja\n");
+    if(comp>0)
+    {
+        FILE *archi=fopen(archivo,"rb");
+        if(archi)
+        {
+            while(fread(&a,sizeof(stCliente),1,archi)>0)
+            {
+                printf("ID -%d-\n",a.id);
+                printf("Numero de cliente: %d\n",a.nroCliente);
+                printf("Nombre: %s\n",a.nombre);
+                printf("Apellido: %s\n",a.apellido);
+                printf("D.N.I: %s\n",a.dni);
+                printf("Email: %s\n",a.email);
+                printf("Domicilio: %s\n",a.domicilio);
+                printf("Movil: %s\n",a.movil);
 
+                printf("Estado %d\n",a.baja);
+
+            }
+            fclose(archi);
+        }
+    }
+    else
+    {
+        printf("EL archivo no existe o esta dañado!!!\n");
+    }
+}
+
+void darDeBaja(char archivo[],int nroClnt)
+{
+
+    stCliente a;
+    FILE *archi=fopen(archivo,"r+b");
+    int cont=0;
+    int opcion=0;
+    if(archi)
+    {
+        printf("Precione 1 para alta o 2 para baja\n");
+        scanf("%d",&opcion);
+        while(fread(&a,sizeof(stCliente),1,archi)>0)
+        {
+            if(a.nroCliente==nroClnt)
+            {
+
+                switch(opcion)
+                {
+                case 1:
+                    a.baja=0;
+                    break;
+                case 2:
+                    a.baja=-1;
+                    break;
+                }
+
+                fseek(archi,-1*sizeof(stCliente),SEEK_CUR);
+                fwrite(&a,sizeof(stCliente),1,archi);
+                cont++;
+                fseek(archi,sizeof(stCliente)*cont,SEEK_SET);
             }
         }
         fclose(archi);
     }
-    }else{
-        printf("EL archivo no existe o esta dañado!!!\n");
-    }
+
 }

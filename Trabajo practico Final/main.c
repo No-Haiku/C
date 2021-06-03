@@ -29,13 +29,16 @@ typedef struct
 void cargaNombreYapellido(char archivo[]);
 void muestraArchivo(char archivo[]);
 int cargaDatosCliente(char archivo[],int validos);
+void muestaArchivoClientes(char archivo[]);
 int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
-    muestraArchivo("nomb_ape.bin");
+   // muestraArchivo("nomb_ape.bin");
     int vldsCrgaClnt=0;
-    vldsCrgaClnt=cargaDatosCliente("clientes.bin",vldsCrgaClnt);
-    printf("validos %d\n",vldsCrgaClnt);
+    //vldsCrgaClnt=cargaDatosCliente("clientes.bin",vldsCrgaClnt);
+   // printf("validos %d\n",vldsCrgaClnt);
+    printf("muestra clientes\n");
+    muestaArchivoClientes("clientes.bin");
     return 0;
 }
 
@@ -152,5 +155,31 @@ int cargaDatosCliente(char archivo[],int validos)
 
 void muestaArchivoClientes(char archivo[]){
 
+    int comp=fopen(archivo,"r");
+    stCliente a;
 
+    if(comp>0){
+    FILE *archi=fopen(archivo,"rb");
+    if(archi){
+        while(fread(&a,sizeof(stCliente),1,archi)>0){
+            printf("ID -%d-\n",a.id);
+            printf("Numero de cliente: %d\n",a.nroCliente);
+            printf("Nombre: %s\n",a.nombre);
+            printf("Apellido: %s\n",a.apellido);
+            printf("D.N.I: %s\n",a.dni);
+            printf("Email: %s\n",a.email);
+            printf("Domicilio: %s\n",a.domicilio);
+            printf("Movil: %s\n",a.movil);
+            if(a.baja==0){
+                printf("Activo\n");
+            }else{
+                printf("En Baja\n");
+
+            }
+        }
+        fclose(archi);
+    }
+    }else{
+        printf("EL archivo no existe o esta dañado!!!\n");
+    }
 }

@@ -28,23 +28,30 @@ typedef struct
 
 void cargaNombreYapellido(char archivo[]);
 void muestraArchivo(char archivo[]);
+int cargaDatosCliente(char archivo[],int validos);
 int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
     muestraArchivo("nomb_ape.bin");
+    int vldsCrgaClnt=0;
+    vldsCrgaClnt=cargaDatosCliente("clientes.bin",vldsCrgaClnt);
+    printf("validos %d\n",vldsCrgaClnt);
     return 0;
 }
 
-void cargaNombreYapellido(char archivo[]){
+void cargaNombreYapellido(char archivo[])
+{
 
     char opcion=0;
     stCliente a;
     FILE *archi=fopen(archivo,"ab");
     int i=1;
 
-    if(archi!=NULL){
+    if(archi!=NULL)
+    {
 
-        while(opcion!=27){
+        while(opcion!=27)
+        {
             printf("Veces cargado %d\n",i);
             printf("Ingrese Nombre\n");
             fflush(stdin);
@@ -66,23 +73,84 @@ void cargaNombreYapellido(char archivo[]){
 
 }
 
-void muestraArchivo(char archivo[]){
+void muestraArchivo(char archivo[])
+{
 
     stCliente a;
 
     FILE *archi=fopen(archivo,"rb");
 
-    if(archi!=NULL){
-        while(!feof(archi)){
-                fread(&a,sizeof(stCliente),1,archi);
-            if(!feof(archi)){
+    if(archi!=NULL)
+    {
+        while(!feof(archi))
+        {
+            fread(&a,sizeof(stCliente),1,archi);
+            if(!feof(archi))
+            {
 
-        printf("Nombre %s\n",a.nombre);
-        printf("Apellido %s\n",a.apellido);
+                printf("Nombre %s\n",a.nombre);
+                printf("Apellido %s\n",a.apellido);
             }
         }
 
-    fclose(archi);
+        fclose(archi);
     }
+
+}
+
+int cargaDatosCliente(char archivo[],int validos)
+{
+    char opcion=0;
+    stCliente a;
+    int comprueba=fopen(archivo,"r");///comprueba si el archivo existe xon anterioridad
+    FILE *archi=fopen(archivo,"ab");
+
+    if(archi)
+    {
+        if(comprueba>0){///si el archivo ya existia le asigna el valor del id a validos
+            validos=a.id;
+        }
+        while(opcion!=27)
+        {
+            printf("Numero de cliente \n");
+            scanf("%d",&a.nroCliente);
+            fflush(stdin);
+            printf("Nombre\n");
+            scanf("%s",a.nombre);
+            fflush(stdin);
+            printf("Apellido\n");
+            scanf("%s",a.apellido);
+            fflush(stdin);
+            printf("D.N.I\n");
+            scanf("%s",a.dni);
+            fflush(stdin);
+            printf("Email\n");
+            scanf("%s",a.email);
+            fflush(stdin);
+            if(strchr(a.email, '@' )==NULL)
+            {
+                printf("Email\n");
+                scanf("%s",a.email);
+                fflush(stdin);
+            }
+            printf("Domicilio\n");
+            scanf("%s",a.domicilio);
+            printf("Movil\n");
+            scanf("%s",a.movil);
+            a.baja=0;
+            a.id=validos;
+            validos++;
+            fwrite(&a,sizeof(stCliente),1,archi);
+            printf("Precione ESC para salir ,Cualquier tecla para continuar\n");
+            opcion=getch();
+
+        }
+        fclose(archi);
+    }
+    return validos;
+}
+
+void muestaArchivoClientes(char archivo[]){
+
 
 }

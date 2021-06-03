@@ -276,47 +276,133 @@ void muestraUnCliente(stCliente a)
     printf("Estado %d\n",a.baja);
 }
 
-void filtraClientes(char archivo[]){
+void filtraClientes(char archivo[])
+{
     stCliente a;
-        int opcion;
+    int opcion;
 
     FILE *archi=fopen(archivo,"rb");
 
     printf("ingrese una opcion\n");
     scanf("%d",&opcion);
 
-    if(archi){
+    if(archi)
+    {
 
         char mander[50];
-    int dato;
-        switch(opcion){
-    case 1:
-                printf("Ingrese el numero de cliente a buscar\n");
-                scanf("%d",&dato);
-                while(fread(&a,sizeof(stCliente),1,archi)>0){
-                if(a.nroCliente== dato){
+        int dato;
+        switch(opcion)
+        {
+        case 1:
+            printf("Ingrese el numero de cliente a buscar\n");
+            scanf("%d",&dato);
+            while(fread(&a,sizeof(stCliente),1,archi)>0)
+            {
+                if(a.nroCliente== dato)
+                {
 
-                muestraUnCliente(a);
+                    muestraUnCliente(a);
 
-            }
                 }
-                 system("cls");
-        break;
-    case 2:
-        fflush(stdin);
-        printf("Ingrese nombre de cliente a buscar\n");
-        fflush(stdin);
-        scanf("%s",mander);
-        while(fread(&a,sizeof(stCliente),1,archi)>0){
-        if(strcmp(a.nombre,mander)==0){
-            muestraUnCliente(a);
-        }
-        }
-        break;
+            }
+            system("pause");
+            system("cls");
+            break;
+        case 2:
+            fflush(stdin);
+            printf("Ingrese nombre de cliente a buscar\n");
+            fflush(stdin);
+            scanf("%s",mander);
+            while(fread(&a,sizeof(stCliente),1,archi)>0)
+            {
+                if(strcmp(a.nombre,mander)==0)
+                {
+                    muestraUnCliente(a);
+                }
+            }
+            system("pause");
+            system("cls");
+            break;
+        case 3:
+            printf("Ingrese apellido de cliente a buscar\n");
+            fflush(stdin);
+            scanf("%s",mander);
+            while(fread(&a,sizeof(stCliente),1,archi)>0)
+            {
+                if(strcmp(a.apellido,mander)==0)
+                {
+                    muestraUnCliente(a);
+                }
+            }
+            system("pause");
+            system("cls");
+            break;
+        case 4:
+            printf("Ingrese D.N.I de cliente a buscar\n");
+            fflush(stdin);
+            scanf("%s",mander);
+            while(fread(&a,sizeof(stCliente),1,archi)>0)
+            {
+                if(strcmp(a.dni,mander)==0)
+                {
+                    muestraUnCliente(a);
+                }
+            }
+            system("pause");
+            system("cls");
+            break;
+        case 5:
+            printf("Ingrese email de cliente a buscar\n");
+            fflush(stdin);
+            scanf("%s",mander);
+            if(strchr(mander, '@' )==NULL)
+            {
+                printf("Ingrese email de cliente a buscar\n");
+                scanf("%s",mander);
+                fflush(stdin);
+            }
+            while(fread(&a,sizeof(stCliente),1,archi)>0)
+            {
+                if(strcmp(a.email,mander)==0)
+                {
+                    muestraUnCliente(a);
+                }
+            }
+            system("pause");
+            system("cls");
+            break;
+        case 6:
+            printf("Ingrese domicilio de cliente a buscar\n");
+            fflush(stdin);
+            scanf("%s",mander);
+            while(fread(&a,sizeof(stCliente),1,archi)>0)
+            {
+                if(strcmp(a.domicilio,mander)==0)
+                {
+                    muestraUnCliente(a);
+                }
+            }
+            system("pause");
+            system("cls");
+            break;
+        case 7:
+            printf("Ingrese numero de movil de cliente a buscar\n");
+            fflush(stdin);
+            scanf("%s",mander);
+            while(fread(&a,sizeof(stCliente),1,archi)>0)
+            {
+                if(strcmp(a.movil,mander)==0)
+                {
+                    muestraUnCliente(a);
+                }
+            }
+            system("pause");
+            system("cls");
+            break;
         }
 
 
-    fclose(archi);
+        fclose(archi);
     }
 
 }

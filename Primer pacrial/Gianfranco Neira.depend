@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1490112217 source:c:\users\gianf\onedrive\escritorio\c\gianfranco neira\pila.c
+	"pila.h"
+
+1490112217 c:\users\gianf\onedrive\escritorio\c\gianfranco neira\pila.h
+	<stdio.h>
+	<malloc.h>
+
+1620168984 source:c:\users\gianf\onedrive\escritorio\c\gianfranco neira\main.c
+	<stdio.h>
+	<stdlib.h>
+	"pila.h"
+

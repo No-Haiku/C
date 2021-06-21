@@ -493,7 +493,6 @@ void muestraConsumoConFiltro(char consumos[],stCliente b)///STCLIENTE PASAR SOLO
     {
         int opcion=0;
         int opcion2=0;
-        int baja=-1;
         int dato2=0;
         int datomes=0;
         int datomes2=0;
@@ -773,8 +772,39 @@ void muestraXDatosConsumosFiltro(char consumos[],stCliente b,int datoanio,int da
 
 
 ///CARGA CONSUMOS
-//        printf("Ingrese Mes a buscar\n");
-//        printf("desde...\n");
-//        scanf("%d",&dato);
-//        printf("hasta..\n");
-//        scanf("%d",&dato2);
+int cargaDatosConsumo(char archivoConsumo[],int validos,stCliente b)///pasar id de cliente
+{
+    char opcion=0;
+    stConsumos a;
+    int comprueba=fopen(archivoConsumo,"r");///comprueba si el archivo existe xon anterioridad
+    FILE *archi=fopen(archivoConsumo,"ab");
+
+    if(archi)
+    {
+        if(comprueba>0) ///si el archivo ya existia le asigna el valor del id a validos
+        {
+            validos=a.id;///CAMBIAR POR FSEEK Y VALIDAR EL ULTIMO ID CARGADO
+        }
+        while(opcion!=27)
+        {
+            a.idCliente=b.id;
+            printf("Ingrese anio de consumo \n");
+            scanf("%d",&a.anio);
+            printf("Ingrese mes\n");
+            scanf("%d",a.mes);
+            printf("Ingrese dia\n");
+            scanf("%d",a.dia);
+            printf("Ingrese datos consumidos\n");
+            scanf("%d",a.datosConsumidos);
+            a.baja=0;
+            a.id=validos;
+            validos++;
+            fwrite(&a,sizeof(stConsumos),1,archi);
+            printf("Precione ESC para salir ,Cualquier tecla para continuar\n");
+            opcion=getch();
+
+        }
+        fclose(archi);
+    }
+    return validos;
+}

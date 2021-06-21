@@ -37,7 +37,7 @@ void modificaConsumo(char archivo[],int nroClnt);
 void muestraXAnio(char consumos[],stCliente b);
 void muestraXRangoDeAnios(char consumos[],stCliente b);
 void muestraXMes(char consumos[],stCliente b);
-void muestraXRangoDeMeses(char consumos[],stCliente b);
+void muestraXDatosConsumosFiltro(char consumos[],stCliente b,int datoanio,int datoanio2,int datomes,int datomes2,int datodia,int datodia2);
 int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
@@ -112,7 +112,7 @@ void muestraArchivo(char archivo[])
     }
 
 }
-
+///CARGA DE DATOS CLIENTE
 int cargaDatosCliente(char archivo[],int validos)
 {
     char opcion=0;
@@ -124,7 +124,7 @@ int cargaDatosCliente(char archivo[],int validos)
     {
         if(comprueba>0) ///si el archivo ya existia le asigna el valor del id a validos
         {
-            validos=a.id;
+            validos=a.id;///CAMBIAR POR FSEEK Y VALIDAR EL ULTIMO ID CARGADO
         }
         while(opcion!=27)
         {
@@ -165,7 +165,7 @@ int cargaDatosCliente(char archivo[],int validos)
     }
     return validos;
 }
-
+///MUESTRA ELA RCHIVO CLIENTES
 void muestaArchivoClientes(char archivo[])
 {
 
@@ -199,7 +199,7 @@ void muestaArchivoClientes(char archivo[])
         printf("EL archivo no existe o esta dañado!!!\n");
     }
 }
-
+///MODIFICA DATOS DEL CLIENTE
 void modificaCliente(char archivo[],int nroClnt)
 {
 
@@ -484,7 +484,7 @@ void muestraUnConsumo(stConsumos a)
     printf("Estado %d\n",a.baja);
 }
 /// MUESTRA CONSUMOS SEGUN FILTRO
-void muestraConsumoConFiltro(char consumos[],stCliente b)
+void muestraConsumoConFiltro(char consumos[],stCliente b)///STCLIENTE PASAR SOLO EL ID RECORDATORIO-CRAR UN MENU E INTEGRAR TODO
 {
     FILE *archi=fopen(consumos,"rb");
     stConsumos a;
@@ -493,9 +493,16 @@ void muestraConsumoConFiltro(char consumos[],stCliente b)
     {
         int opcion=0;
         int opcion2=0;
-        int dato=0;
+        int baja=-1;
         int dato2=0;
-        printf("Fliltro\n*ID\n*Anio-1\n*Mes-2\n*Dia-3\n*Consumo-4\n*Alta-5\n*Baja-6\n");
+        int datomes=0;
+        int datomes2=0;
+        int datoanio=0;
+        int datoanio2=0;
+        int datodia=0;
+        int datodia2=0;
+        char opciones=-1;
+        printf("Fliltro\n*ID opcion 1\n*Anio-*Mes-*Dia-*2n");
         switch(opcion)
         {
         case 1:
@@ -511,147 +518,263 @@ void muestraConsumoConFiltro(char consumos[],stCliente b)
             break;
         case 2:
 
-            printf("Busca por\n*Anio-1\n*Rango de Anios-2");
-            scanf("%d",&opcion2);
-            switch(opcion2)
-            {
-            case 1:
-                ///MUESTRA X ANIO
-                muestraXAnio(archi,b);
-                break;
-            case 2:
-                ///MUESTRA X RANGO DE ANIOS
-                muestraXRangoDeAnios(archi,b);
-                break;
-            }
-            break;
-        case 3:
+            printf("muestra anio 0 rango de anios\n");
+            printf("ingrese -s- para buscar por anio -r- para buscar por rango de anios -x- para saltar opcion e ir a la siguiente\n");
 
-            printf("Busca por \n*1 mes\n*2 rango de meses");
-            scanf("%d",&opcion2);
-            switch (opcion2)
+            opciones=getch();
+            if(opciones=='s'||opciones=='S')
             {
-            case 1:
-                ///MUESTRA X MES
-                muestraXMes(archi,b);
-                break;
-            case 2:
-                ///MUESTRA X RANGO DE MESES
-                muestraXRangoDeMeses(archi,b);
-                break;
+                printf("ingrese anio a buscar\n");
+                scanf("%d",&datoanio);
+                datoanio2==datoanio;
+                if(datoanio<1||datoanio>7)
+                {
+                    while(datoanio<1||datoanio>7)
+                    {
+                        printf("ingrese anio a buscar\n");
+                        scanf("%d",&datoanio);
+                        datoanio2==datoanio;
+                    }
+                }
             }
-            break;
-        case 4:
-            break;
+            if(opciones=='r'||opciones=='R')
+            {
+                printf("ingrese rango de anios a buscar\n");
+                printf("desde...\n");
+                scanf("%d",&datoanio);
+                printf("hasta..");
+                scanf("%d",&datoanio2);
+                if(datoanio>datoanio2)
+                {
+                    while(datoanio>datoanio2)
+                    {
+                        printf("ingrese rango de anios a buscar\n");
+                        printf("desde...\n");
+                        scanf("%d",&datoanio);
+                        printf("hasta..");
+                        scanf("%d",&datoanio2);
+                    }
+
+                }
+
+            }
+            printf("muestra mes o rango de meses\n");
+            printf("ingrese -s- para buscar por mes -r- para buscar por rango de meses -x- para saltar opcion e ir a la siguiente\n");
+            opciones=getch();
+            if(opciones=='s'||opciones=='S')
+            {
+                printf("ingrese mes a buscar\n");
+                scanf("%d",&datomes);
+                datomes2==datomes;
+                if(datomes<1||datomes>7)
+                {
+                    while(datomes<1||datomes>7)
+                    {
+                        printf("ingrese mes a buscar\n");
+                        scanf("%d",&datomes);
+                        datomes2==datomes;
+                    }
+                }
+            }
+            if(opciones=='r'||opciones=='R')
+            {
+                printf("ingrese rango de meses a buscar\n");
+                printf("desde...\n");
+                scanf("%d",&datomes);
+                printf("hasta..");
+                scanf("%d",&datomes2);
+                if(datomes>datomes2|| datomes <1||datomes>12||datomes2<1||datomes2>12)
+                {
+                    while(datomes>datomes2|| datomes <1||datomes>12||datomes2<1||datomes2>12)
+                    {
+                        printf("ingrese rango de meses a buscar\n");
+                        printf("desde...\n");
+                        scanf("%d",&datomes);
+                        printf("hasta..");
+                        scanf("%d",&datomes2);
+                    }
+
+                }
+                printf("muestra dia o rango de dias");
+                printf("ingrese -s- para buscar por mes -r- para buscar por rango de meses -x- para saltar opcion e ir a la siguiente\n");
+                opciones=getch();
+                if(opciones=='s'||opciones=='S')
+                {
+                    printf("ingrese dia a buscar\n");
+                    scanf("%d",&datodia);
+                    datodia2==datodia;
+                    if(datodia<1||datodia>7)
+                    {
+                        while(datodia<1||datodia>7)
+                        {
+                            printf("ingrese dia a buscar\n");
+                            scanf("%d",&datodia);
+                            datodia2==datodia;
+                        }
+                    }
+                }
+                if(opciones=='r'||opciones=='R')
+                {
+                    printf("ingrese rango de dias a buscar\n");
+                    printf("desde...\n");
+                    scanf("%d",&datodia);
+                    printf("hasta..");
+                    scanf("%d",&datodia2);
+                    if(datodia>datodia2|| datodia <1||datodia>7||datodia2<1||datodia2>7)
+                    {
+                        while(datodia>datodia2|| datodia <1||datodia>7||datodia2<1||datodia2>7)
+                        {
+                            printf("ingrese rango de dias a buscar\n");
+                            printf("desde...\n");
+                            scanf("%d",&datodia);
+                            printf("hasta..");
+                            scanf("%d",&datodia2);
+                        }
+
+                    }
+///************************DEFAULT****************************************************
+/// si algunos de los datos estan en 0 les otorga un valor como default de esta manera
+///si el usuario quiere ver un dia en especifico sin importar los años o un rango de años sin umportar los dias
+/// lo puede hacer ademas que me ahorro crear una funcion diferente para cada funcion especifica
+                    if(datoanio==0)
+                    {
+                        datoanio=1;
+                    }
+                    if(datoanio2==0)
+                    {
+                        datoanio2=99999999;
+                    }
+                    if(datomes==0)
+                    {
+                        datomes=1;
+                    }
+                    if(datomes2==0)
+                    {
+                        datomes2=12;
+                    }
+                    if(datodia==0)
+                    {
+                        datoanio=1;
+                    }
+                    if(datodia2==0)
+                    {
+                        datodia2=7;
+                    }
+///+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                    muestraXDatosConsumosFiltro(archi,b,datoanio,datoanio2,datomes,datomes2,datodia,datodia2);
+                    break;
+
+                }
+
+                fclose(archi);
+            }
         }
-
-        fclose(archi);
     }
 }
-void muestraXAnio(char consumos[],stCliente b)
-{
-    stConsumos a;
-    FILE *archi=fopen(consumos,"rb");
-    int dato=0;
-    if(archi)
-    {
-        printf("Ingrese Anio a buscar\n");
-
-        scanf("%d",&dato);
-        while(fread(&a,sizeof(stConsumos),1,archi))
-        {
-            if(a.anio==dato&&a.idCliente==b.id)
-            {
-                muestraUnConsumo(a);
-            }
-        }
-    }
-}
-void muestraXRangoDeAnios(char consumos[],stCliente b)
-{
-    stConsumos a;
-    FILE *archi=fopen(consumos,"rb");
-    if(archi)
-    {
-        int dato=0;
-        int dato2=0;
-        printf("Ingrese rango de anios\n");
-        printf("De...\n");
-        scanf("%d",&dato);
-        printf("Hasta...\n");
-        scanf("%d",&dato2);
-        if(dato>dato2)
-        {
-            printf("Ingrese rango de anios\n");
-            printf("De...\n");
-            scanf("%d",&dato);
-            printf("Hasta...\n");
-            scanf("%d",&dato2);
-        }
-        while(fread(&a,sizeof(stConsumos),1,archi))
-        {
-            if(a.anio<=dato2&&a.anio>=dato&&a.idCliente==b.id)
-            {
-                muestraUnConsumo(a);
-            }
-        }
-    }
-}
+///muestras por anio funcion en desuso
+//void muestraXAnio(char consumos[],stCliente b)
+//{
+//    stConsumos a;
+//    FILE *archi=fopen(consumos,"rb");
+//    int dato=0;
+//    if(archi)
+//    {
+//        printf("Ingrese Anio a buscar\n");
+//
+//        scanf("%d",&dato);
+//        while(fread(&a,sizeof(stConsumos),1,archi)>0)
+//        {
+//            if(a.anio==dato&&a.idCliente==b.id)
+//            {
+//                muestraUnConsumo(a);
+//            }
+//        }
+//    }
+//}
+///muestra por rango de años funcion en desuso
+//void muestraXRangoDeAnios(char consumos[],stCliente b)
+//{
+//    stConsumos a;
+//    FILE *archi=fopen(consumos,"rb");
+//    if(archi)
+//    {
+//        int dato=0;
+//        int dato2=0;
+//        printf("Ingrese rango de anios\n");
+//        printf("De...\n");
+//        scanf("%d",&dato);
+//        printf("Hasta...\n");
+//        scanf("%d",&dato2);
+//        if(dato>dato2)
+//        {
+//            printf("Ingrese rango de anios\n");
+//            printf("De...\n");
+//            scanf("%d",&dato);
+//            printf("Hasta...\n");
+//            scanf("%d",&dato2);
+//        }
+//        while(fread(&a,sizeof(stConsumos),1,archi)>0)
+//        {
+//            if(a.anio<=dato2&&a.anio>=dato&&a.idCliente==b.id)
+//            {
+//                muestraUnConsumo(a);
+//            }
+//        }
+//    }
+//}
 ///MUESTRA X MES
-void muestraXMes(char consumos[],stCliente b)
+//void muestraXMes(char consumos[],stCliente b)
+//{
+//    stConsumos a;
+//    FILE *archi=fopen(consumos,"rb");
+//    int dato=0;
+//
+//    if(archi)
+//    {
+//        printf("Ingrese Mes a buscar\n");
+//        scanf("%d",&dato);
+//        if(dato >12&& dato <1)
+//        {
+//            printf("Ingrese Mes a buscar\n");
+//
+//            scanf("%d",&dato);
+//        }
+//        while(fread(&a,sizeof(stConsumos),1,archi)>0)
+//        {
+//            if(a.mes==dato&&a.idCliente==b.id)
+//            {
+//                muestraUnConsumo(a);
+//            }
+//        }
+//    }
+//
+//}
+///MUESTRA TODOS LOS DATOS DE STCONSUMOS CON LA FUNCION DE FILTROS
+void muestraXDatosConsumosFiltro(char consumos[],stCliente b,int datoanio,int datoanio2,int datomes,int datomes2,int datodia,int datodia2)
 {
+
     stConsumos a;
     FILE *archi=fopen(consumos,"rb");
-    int dato=0;
 
     if(archi)
     {
-        printf("Ingrese Mes a buscar\n");
-        scanf("%d",&dato);
-        if(dato >12&& dato <1)
-        {
-            printf("Ingrese Mes a buscar\n");
 
-            scanf("%d",&dato);
-        }
-        while(fread(&a,sizeof(stConsumos),1,archi))
+
+        while(fread(&a,sizeof(stConsumos),1,archi)>0)
         {
-            if(a.mes==dato&&a.idCliente==b.id)
+            if(a.idCliente==b.id&&a.anio>=datoanio&&a.anio<=datoanio2&&a.mes>=datomes&&a.mes<=datomes2&&a.dia>=datodia&&a.dia<=datodia2)
             {
                 muestraUnConsumo(a);
             }
         }
     }
-
+    fclose(archi);
 }
-///MUESTRA X RANGO DE MESES
-void muestraXRangoDeMeses(char consumos[],stCliente b)
-{
 
-    stConsumos a;
-    FILE *archi=fopen(consumos,"rb");
-    int dato=0;
-    int dato2=0;
-    if(archi)
-    {
-        printf("Ingrese Mes a buscar\n");
-        printf("desde...\n");
-        scanf("%d",&dato);
-        printf("hasta..\n");
-        scanf("%d",&dato2);
-        if(dato >12&& dato <1 && dato2 >12&& dato2 <1 && dato<dato2)
-        {
-            printf("Ingrese Mes a buscar\n");
 
-            scanf("%d",&dato);
-        }
-        while(fread(&a,sizeof(stConsumos),1,archi))
-        {
-            if(a.mes>=dato&&a.mes<=dato2&&a.idCliente==b.id)
-            {
-                muestraUnConsumo(a);
-            }
-        }
-    }
-}
 ///CARGA CONSUMOS
+//        printf("Ingrese Mes a buscar\n");
+//        printf("desde...\n");
+//        scanf("%d",&dato);
+//        printf("hasta..\n");
+//        scanf("%d",&dato2);

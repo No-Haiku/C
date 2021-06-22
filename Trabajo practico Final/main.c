@@ -40,6 +40,7 @@ void muestraXMes(char consumos[],stCliente b);
 void muestraXDatosConsumosFiltro(char consumos[],stCliente b,int datoanio,int datoanio2,int datomes,int datomes2,int datodia,int datodia2);
 int cargaDatosConsumo(char archivoConsumo[],int validos,int b);
 void muestraUnConsumo(stConsumos a);
+int verificaSiRepiteDatoCliente(char archivo[],int id,stCliente a);
 int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
@@ -47,8 +48,8 @@ int main()
     int vldsCrgaClnt=0;
     int vldsCrgaConsu=0;
     stCliente b;
-    //vldsCrgaClnt=cargaDatosCliente("clientes.bin",vldsCrgaClnt);
-    // printf("validos %d\n",vldsCrgaClnt);
+    vldsCrgaClnt=cargaDatosCliente("clientes.bin",vldsCrgaClnt);
+    printf("validos %d\n",vldsCrgaClnt);
     printf("muestra clientes\n");
     muestaArchivoClientes("clientes.bin");
     ///modificaCliente("clientes.bin",1);
@@ -72,6 +73,8 @@ int cargaDatosCliente(char archivo[],int validos)
     int comprueba=fopen(archivo,"r");///comprueba si el archivo existe xon anterioridad
     FILE *archi=fopen(archivo,"ab");
     int guardaNroCli;
+    char guardaDNI [30];
+    int flag=-1;
 
     if(archi)
     {
@@ -93,6 +96,7 @@ int cargaDatosCliente(char archivo[],int validos)
             fflush(stdin);
             printf("D.N.I\n");
             scanf("%s",a.dni);
+            strcpy(guardaDNI,a.dni);
             fflush(stdin);
             printf("Email\n");
             scanf("%s",a.email);
@@ -108,11 +112,26 @@ int cargaDatosCliente(char archivo[],int validos)
             printf("Movil\n");
             scanf("%s",a.movil);
             a.baja=0;
-            a.id=validos;
-            validos++;
-//            printf("carga consumos\n");
-//           vldsCrgaConsu=cargaDatosConsumo("consumo.bin",vldsCrgaConsu,guardaNroCli);
-            fwrite(&a,sizeof(stCliente),1,archi);
+            flag=verificaSiRepiteDatoCliente(archivo,guardaNroCli,a);///pasar directamente archivo , archi no me lo leia
+            printf("dato de flag %d\n",flag);
+            printf("numero cliente guardado %d\n",guardaNroCli);
+            if(flag==0)
+            {
+                a.id=validos;
+                validos++;
+                printf("Agregar datos de consumo? s/n\n");
+                opcion=getch();
+                if(opcion=='s'||opcion=='S')
+                {
+                    printf("****************carga consumos!!!!!!!!!!!!!\n");
+                    vldsCrgaConsu=cargaDatosConsumo("consumo.bin",vldsCrgaConsu,guardaNroCli);
+                }
+                fwrite(&a,sizeof(stCliente),1,archi);
+            }
+            if(flag==1){
+                printf("EROR LOS DATOS NO SERAN GUARDADOS REVISE QUE EL NUMERO DE CLIENTE O EL USUARIO DNI NO EXISTA!!!\n");
+            }
+
 
             printf("Precione ESC para salir ,Cualquier tecla para continuar\n");
             opcion=getch();
@@ -121,6 +140,27 @@ int cargaDatosCliente(char archivo[],int validos)
         fclose(archi);
     }
     return validos;
+}
+int verificaSiRepiteDatoCliente(char archivo[],int nrc,stCliente a)
+{
+    stCliente c;
+    int flag=0;
+    int compara;
+    FILE *archi=fopen(archivo,"rb");
+    fseek(archi,0,SEEK_SET);
+    if(archi)
+    {
+        while(fread(&c,sizeof(stCliente),1,archi)>0)
+        {
+            printf("compara %d\n",compara);
+            if(c.nroCliente==nrc||compara==0)
+            {
+                flag=1;
+            }
+        }
+    }
+    fclose(archi);
+    return flag;
 }
 ///MUESTRA ELA RCHIVO CLIENTES
 void muestaArchivoClientes(char archivo[])
@@ -281,10 +321,12 @@ void filtraClientes(char archivo[],char archivoConsumo[])
                     if(datoConsumo=='s')
                     {
                         printf("********Consumos*********\n");
-                        while(fread(&b,sizeof(stConsumos),1,archicon)>0){
-                          if(a.nroCliente==b.idCliente){
-                            muestraUnConsumo(b);
-                          }
+                        while(fread(&b,sizeof(stConsumos),1,archicon)>0)
+                        {
+                            if(a.nroCliente==b.idCliente)
+                            {
+                                muestraUnConsumo(b);
+                            }
                         }
 
                     }
@@ -308,7 +350,13 @@ void filtraClientes(char archivo[],char archivoConsumo[])
                     if(datoConsumo=='s')
                     {
                         printf("********Consumos*********\n");
-                        muestraUnConsumo(b);
+                        while(fread(&b,sizeof(stConsumos),1,archicon)>0)
+                        {
+                            if(a.nroCliente==b.idCliente)
+                            {
+                                muestraUnConsumo(b);
+                            }
+                        }
                     }
                 }
             }

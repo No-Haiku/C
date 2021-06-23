@@ -45,6 +45,8 @@ void agregaConsumosDias(char archivo[],stConsumos a);
 int cuentaRegistros(char archivo[], int tamanioSt);
 void guardaNroClienteMemoriaDinamica(int arreglo[],int dim,int validos,int dato);
 int verificaArregloNroClte(int arreglo[],int validos,int dato);
+void guardaDniMemoriaDinamica(stCliente arreglo[],int validos,stCliente a);
+int verificaArregloDni(stCliente arreglo[],int validos,stCliente a);
 int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
@@ -77,10 +79,12 @@ void cargaDatosCliente(char archivo[])
     int guardaNroCli;
     int flag=-1;
     int flag2=-1;
+    int flag3=-1;
     int dim=100;
     int validosNroClt=0;
+    int validosDni=0;
     int arregloNroCliente [100];
-    char arregloDni [100][100];
+    stCliente arregloDni  [100];
 
     if(archi)
     {
@@ -91,10 +95,7 @@ void cargaDatosCliente(char archivo[])
             guardaNroCli=a.nroCliente;
             validosNroClt++;
             guardaNroClienteMemoriaDinamica(arregloNroCliente,dim,validosNroClt,guardaNroCli);
-            printf("Esto es un printf\n");
-
             flag2=verificaArregloNroClte(arregloNroCliente,validosNroClt,guardaNroCli);
-            printf("\n Datos de flag2 %d\n",flag2);
             fflush(stdin);
             printf("Nombre\n");
             scanf("%s",a.nombre);
@@ -104,6 +105,10 @@ void cargaDatosCliente(char archivo[])
             fflush(stdin);
             printf("D.N.I\n");
             scanf("%s",a.dni);
+            validosDni++;
+            guardaDniMemoriaDinamica(arregloDni,validosDni,a);
+            flag3=verificaArregloDni(arregloDni,validosDni,a);
+            printf("Este el flag 3 dni %d\n",flag3);
             fflush(stdin);
             printf("Email\n");
             scanf("%s",a.email);
@@ -124,7 +129,7 @@ void cargaDatosCliente(char archivo[])
             flag=verificaSiRepiteDatoCliente(archivo,guardaNroCli,a);///pasar directamente archivo , archi no me lo leia
             printf("dato de flag %d\n",flag);
             printf("numero cliente guardado %d\n",guardaNroCli);
-            if(flag==0&&flag2<=1)
+            if(flag==0&&flag2<=1&&flag3<=1)///aca verifico que no exista mas de una copia de los datos si esta todo ok guarda el archivo
             {
                 a.id=validos;
                 validos++;
@@ -137,9 +142,9 @@ void cargaDatosCliente(char archivo[])
                 }
                 fwrite(&a,sizeof(stCliente),1,archi);
             }
-            if(flag==1||flag2>1){
+            if(flag==1||flag2>1||flag3>1){
                 printf("ERROR LOS DATOS NO SERAN GUARDADOS REVISE QUE EL NUMERO DE CLIENTE O EL USUARIO DNI NO EXISTA!!!\n");
-                printf("VUELVA A INTENTARLO A ACONTINUACION...")
+                printf("VUELVA A INTENTARLO A ACONTINUACION...");
             }
 
 
@@ -153,31 +158,48 @@ void cargaDatosCliente(char archivo[])
 ///comprueba que el numero de cliente no aya sido escrito es para solucionar el error que no lo reconoce en sesion activa
 void guardaNroClienteMemoriaDinamica(int arreglo[],int dim,int validos,int dato){
     int i;
-    printf("hola\n");
     for(i=0;i<validos;i++){
         arreglo[i]=dato;
+    }
+
+}
+int verificaArregloNroClte(int arreglo[],int validos,int dato){
+    int i=0;
+    int flag=0;
+    while(i<validos){
+
+        if(arreglo[i]==dato){
+            flag++;
+        }
+        i++;
+    }
+    return flag;
+}
+void guardaDniMemoriaDinamica(stCliente arreglo[],int validos,stCliente a){
+    int i;
+    printf("hola %s\n",a.dni);
+    printf("hola\n");
+    for(i=0;i<validos;i++){
+        arreglo[i]=a;
         printf("hola2\n");
     }
     printf("hola3\n");
         for(i=0;i<validos;i++){
 
-        printf("hola %d\n",arreglo[i]);
+        printf("hola %s\n",arreglo[i].dni);
     }
 }
-int verificaArregloNroClte(int arreglo[],int validos,int dato){
-    printf("Hla mama\n");
+int verificaArregloDni(stCliente arreglo[],int validos,stCliente a){
     int i=0;
     int flag=0;
+    int comprueba;
     while(i<validos){
-          printf("Hla mama2 %d\n",arreglo[i]);
-
-        if(arreglo[i]==dato){
+        comprueba=strcmp(arreglo[i].dni,a.dni);
+        if(comprueba==0){
             flag++;
-            printf("son iguales!!!!n");
         }
         i++;
     }
-    printf("final del while %d",flag);
     return flag;
 }
 int verificaSiRepiteDatoCliente(char archivo[],int nrc,stCliente a)///pasar file *archi

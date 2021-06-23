@@ -144,7 +144,7 @@ void cargaDatosCliente(char archivo[])
             }
             if(flag==1||flag2>1||flag3>1){
                 printf("ERROR LOS DATOS NO SERAN GUARDADOS REVISE QUE EL NUMERO DE CLIENTE O EL USUARIO DNI NO EXISTA!!!\n");
-                printf("VUELVA A INTENTARLO A ACONTINUACION...");
+                printf("VUELVA A INTENTARLO DE NUEVO A ACONTINUACION...");
             }
 
 
@@ -156,6 +156,7 @@ void cargaDatosCliente(char archivo[])
     }
 }
 ///comprueba que el numero de cliente no aya sido escrito es para solucionar el error que no lo reconoce en sesion activa
+///ESTA FUNCION GUARDA EL NUMERO DE CLIENTE DE LA MEMORIA DINAMICA EN UN ARREGLO
 void guardaNroClienteMemoriaDinamica(int arreglo[],int dim,int validos,int dato){
     int i;
     for(i=0;i<validos;i++){
@@ -163,6 +164,8 @@ void guardaNroClienteMemoriaDinamica(int arreglo[],int dim,int validos,int dato)
     }
 
 }
+
+/// ESTA FUNCION VERIFICA QUE EN LA SESION ACTUAL NO SE AYA REPETIDO EL DATO
 int verificaArregloNroClte(int arreglo[],int validos,int dato){
     int i=0;
     int flag=0;
@@ -175,6 +178,7 @@ int verificaArregloNroClte(int arreglo[],int validos,int dato){
     }
     return flag;
 }
+///ESTA FUNCION GUARDA EL NUMERO DE DNI*ESTRUCTURA COMPLETA EN OTRA ESTRUCTURA* DE LA MEMORIA DINAMICA EN UN ARREGLO
 void guardaDniMemoriaDinamica(stCliente arreglo[],int validos,stCliente a){
     int i;
     printf("hola %s\n",a.dni);
@@ -189,6 +193,9 @@ void guardaDniMemoriaDinamica(stCliente arreglo[],int validos,stCliente a){
         printf("hola %s\n",arreglo[i].dni);
     }
 }
+/// PENSANDOLO MEJOR PUDE CREAR UNA SOLA FUNCION PARA TODO COMPROBANDO LA ESTRUCTURA DIRECTAMENDE
+/// LO DEJO PARA DESPUES PRIMERO TENGO QUE CUMPLIR LAS CONSIGNAR DESPUES LO PULIMOS XD
+/// ESTA FUNCION VERIFICA QUE EN LA SESION ACTUAL NO SE AYA REPETIDO EL DATO
 int verificaArregloDni(stCliente arreglo[],int validos,stCliente a){
     int i=0;
     int flag=0;
@@ -202,6 +209,7 @@ int verificaArregloDni(stCliente arreglo[],int validos,stCliente a){
     }
     return flag;
 }
+///verifica si el dni o el nmero de cliente se repite en el archivo
 int verificaSiRepiteDatoCliente(char archivo[],int nrc,stCliente a)///pasar file *archi
 {
     stCliente c;

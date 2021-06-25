@@ -41,19 +41,19 @@ void muestraXDatosConsumosFiltro(char consumos[],stCliente b,int datoanio,int da
 void cargaDatosConsumo(char archivoConsumo[],stCliente b);
 void muestraUnConsumo(stConsumos a);
 int verificaSiRepiteDatoCliente(char archivo[],int id,stCliente a);
-void agregaConsumosDias(char archivo[],stConsumos a);
 int cuentaRegistros(char archivo[], int tamanioSt);
 void guardaNroClienteMemoriaDinamica(int arreglo[],int dim,int validos,int dato);
 int verificaArregloNroClte(int arreglo[],int validos,int dato);
 void guardaDniMemoriaDinamica(stCliente arreglo[],int validos,stCliente a);
 int verificaArregloDni(stCliente arreglo[],int validos,stCliente a);
+stConsumos agregaConsumosDias(char archivo[],stConsumos a,int dato);
 int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
     // muestraArchivo("nomb_ape.bin");
     int vldsCrgaClnt=0;
     stCliente b;
-    cargaDatosCliente("clientes.bin");
+    //cargaDatosCliente("clientes.bin");
     printf("muestra clientes\n");
     muestaArchivoClientes("clientes.bin");
     ///modificaCliente("clientes.bin",1);
@@ -346,7 +346,7 @@ void muestraUnCliente(stCliente a)
     printf("Movil: %s\n",a.movil);
     printf("Estado %d\n",a.baja);
 }
-
+///Filtra los clientes
 void filtraClientes(char archivo[],char archivoConsumo[])
 {
     stCliente a;
@@ -387,6 +387,8 @@ void filtraClientes(char archivo[],char archivoConsumo[])
                 {
 
                     muestraUnCliente(a);
+                    printf("carga datos consumo\n");
+                    cargaDatosConsumo(archivoConsumo,a);
                     if(datoConsumo=='s')
                     {
                         printf("********Consumos*********\n");
@@ -395,6 +397,7 @@ void filtraClientes(char archivo[],char archivoConsumo[])
                             if(a.nroCliente==b.idCliente)
                             {
                                 muestraUnConsumo(b);
+
                             }
                         }
 
@@ -658,6 +661,7 @@ void cargaDatosConsumo(char archivoConsumo[],stCliente b)
 {
     char opcion=0;
     stConsumos a;
+    int dato=0;
     int validos=cuentaRegistros(archivoConsumo, sizeof(stConsumos));
     int comprueba=fopen(archivoConsumo,"r");///comprueba si el archivo existe xon anterioridad
     FILE *archi=fopen(archivoConsumo,"ab");
@@ -675,36 +679,55 @@ void cargaDatosConsumo(char archivoConsumo[],stCliente b)
             scanf("%d",&a.dia);
             printf("Ingrese datos consumidos\n");
             scanf("%d",&a.datosConsumidos);
+            dato=a.datosConsumidos;
             a.baja=0;
             a.id=validos;
             validos++;
-            agregaConsumosDias(archivoConsumo,a);
+
+            a=agregaConsumosDias(archivoConsumo,a,dato);
             fwrite(&a,sizeof(stConsumos),1,archi);
-            printf("Precione ESC para salir ,Cualquier tecla para continuar\n");
+
+            printf("Precione ESC para salir ,Cualquier tecla para continuar cargando consumos\n");
             opcion=getch();
 
         }
         fclose(archi);
     }
 }
-void agregaConsumosDias(char archivo[],stConsumos a)
+///DEvuelve la suma de todos los consumos en la misma fecha
+stConsumos agregaConsumosDias(char archivo[],stConsumos a,int dato)
 {
+    printf("Hola esta es la suma de consumos -1-\n");
     stConsumos b;
     int compara;
-    FILE *archi=fopen(archivo,"ab");
+    FILE *archi=fopen(archivo,"r+b");
+    int suma=0;
+    int flag=0;
+    ///rewind(archi);
     if(archi)
-    {
-        while(fread(&b,sizeof(stCliente),1,archi)>0)
-        {
+    {printf("hola archi es valido\n");
+        while(fread(&b,sizeof(stConsumos),1,archi)>0)
+        {printf("dentro del while\n");
 
             if(b.idCliente==a.idCliente&&b.anio==a.anio&&b.mes==a.mes&&b.dia==a.dia)
             {
-                b.datosConsumidos=b.datosConsumidos+a.datosConsumidos;
-                fwrite(&b,sizeof(stConsumos),1,archi);
+                printf("Hola datos consumidos antes de sumar %d -2-\n",b.datosConsumidos);
+                suma=b.datosConsumidos+dato;
+                printf("Hola esta es la suma de consumos valor en datos consumidos %d -3-\n",suma);
+
+
+
             }
+
         }
+                b.datosConsumidos=suma;
+//                fseek(archi, -1 * sizeof(stConsumos), SEEK_CUR);
+//                fwrite(&b, sizeof(stConsumos), 1, archi);
+//
+//                fseek(archi, sizeof(stCliente), SEEK_CUR);
     }
     fclose(archi);
+    return b;
 }
 int cuentaRegistros(char archivo[], int tamanioSt){
     int cantidadRegistros = 0;

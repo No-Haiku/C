@@ -720,14 +720,14 @@ stConsumos agregaConsumosDias(char archivo[],stConsumos a,int dato)
             }
 
         }
-                b.datosConsumidos=suma;
+                a.datosConsumidos=suma;
 //                fseek(archi, -1 * sizeof(stConsumos), SEEK_CUR);
 //                fwrite(&b, sizeof(stConsumos), 1, archi);
 //
 //                fseek(archi, sizeof(stCliente), SEEK_CUR);
     }
     fclose(archi);
-    return b;
+    return a;
 }
 int cuentaRegistros(char archivo[], int tamanioSt){
     int cantidadRegistros = 0;

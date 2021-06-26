@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define ANIO_ACTUAL 2021
+
 typedef struct
 {
     int id; /// campo único y autoincremental
@@ -47,6 +49,8 @@ int verificaArregloNroClte(int arreglo[],int validos,int dato);
 void guardaDniMemoriaDinamica(stCliente arreglo[],int validos,stCliente a);
 int verificaArregloDni(stCliente arreglo[],int validos,stCliente a);
 stConsumos agregaConsumosDias(char archivo[],stConsumos a,int dato);
+int anioBisiesto(stConsumos a);
+int mesesYdias(stConsumos a,int flag);
 int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
@@ -64,6 +68,10 @@ int main()
 //    muestraConsumoConFiltro("consumo.bin",b);
 //printf("carga consumos\n");
 //cargaDatosConsumo("consumo.bin",vldsCrgaConsu,1);
+
+    do{
+
+    }while(opcion!=27);
     return 0;
 }
 
@@ -115,14 +123,15 @@ void cargaDatosCliente(char archivo[])
             fflush(stdin);
             if(strchr(a.email, '@' )==NULL)
             {
-                while(strchr(a.email, '@')==NULL ){
-                printf("Email\n");
-                scanf("%s",a.email);
-                fflush(stdin);
+                while(strchr(a.email, '@')==NULL )
+                {
+                    printf("Email\n");
+                    scanf("%s",a.email);
+                    fflush(stdin);
                 }
             }
             printf("Domicilio\n");
-            scanf("%s",a.domicilio);
+            scanf("%[^\n]",a.domicilio);
             printf("Movil\n");
             scanf("%s",a.movil);
             a.baja=0;
@@ -142,7 +151,8 @@ void cargaDatosCliente(char archivo[])
                 }
                 fwrite(&a,sizeof(stCliente),1,archi);
             }
-            if(flag==1||flag2>1||flag3>1){
+            if(flag==1||flag2>1||flag3>1)
+            {
                 printf("ERROR LOS DATOS NO SERAN GUARDADOS REVISE QUE EL NUMERO DE CLIENTE O EL USUARIO DNI NO EXISTA!!!\n");
                 printf("VUELVA A INTENTARLO DE NUEVO A ACONTINUACION...");
             }
@@ -157,21 +167,26 @@ void cargaDatosCliente(char archivo[])
 }
 ///comprueba que el numero de cliente no aya sido escrito es para solucionar el error que no lo reconoce en sesion activa
 ///ESTA FUNCION GUARDA EL NUMERO DE CLIENTE DE LA MEMORIA DINAMICA EN UN ARREGLO
-void guardaNroClienteMemoriaDinamica(int arreglo[],int dim,int validos,int dato){
+void guardaNroClienteMemoriaDinamica(int arreglo[],int dim,int validos,int dato)
+{
     int i;
-    for(i=0;i<validos;i++){
+    for(i=0; i<validos; i++)
+    {
         arreglo[i]=dato;
     }
 
 }
 
 /// ESTA FUNCION VERIFICA QUE EN LA SESION ACTUAL NO SE AYA REPETIDO EL DATO
-int verificaArregloNroClte(int arreglo[],int validos,int dato){
+int verificaArregloNroClte(int arreglo[],int validos,int dato)
+{
     int i=0;
     int flag=0;
-    while(i<validos){
+    while(i<validos)
+    {
 
-        if(arreglo[i]==dato){
+        if(arreglo[i]==dato)
+        {
             flag++;
         }
         i++;
@@ -179,16 +194,19 @@ int verificaArregloNroClte(int arreglo[],int validos,int dato){
     return flag;
 }
 ///ESTA FUNCION GUARDA EL NUMERO DE DNI*ESTRUCTURA COMPLETA EN OTRA ESTRUCTURA* DE LA MEMORIA DINAMICA EN UN ARREGLO
-void guardaDniMemoriaDinamica(stCliente arreglo[],int validos,stCliente a){
+void guardaDniMemoriaDinamica(stCliente arreglo[],int validos,stCliente a)
+{
     int i;
     printf("hola %s\n",a.dni);
     printf("hola\n");
-    for(i=0;i<validos;i++){
+    for(i=0; i<validos; i++)
+    {
         arreglo[i]=a;
         printf("hola2\n");
     }
     printf("hola3\n");
-        for(i=0;i<validos;i++){
+    for(i=0; i<validos; i++)
+    {
 
         printf("hola %s\n",arreglo[i].dni);
     }
@@ -196,13 +214,16 @@ void guardaDniMemoriaDinamica(stCliente arreglo[],int validos,stCliente a){
 /// PENSANDOLO MEJOR PUDE CREAR UNA SOLA FUNCION PARA TODO COMPROBANDO LA ESTRUCTURA DIRECTAMENDE
 /// LO DEJO PARA DESPUES PRIMERO TENGO QUE CUMPLIR LAS CONSIGNAR DESPUES LO PULIMOS XD
 /// ESTA FUNCION VERIFICA QUE EN LA SESION ACTUAL NO SE AYA REPETIDO EL DATO
-int verificaArregloDni(stCliente arreglo[],int validos,stCliente a){
+int verificaArregloDni(stCliente arreglo[],int validos,stCliente a)
+{
     int i=0;
     int flag=0;
     int comprueba;
-    while(i<validos){
+    while(i<validos)
+    {
         comprueba=strcmp(arreglo[i].dni,a.dni);
-        if(comprueba==0){
+        if(comprueba==0)
+        {
             flag++;
         }
         i++;
@@ -235,31 +256,31 @@ int verificaSiRepiteDatoCliente(char archivo[],int nrc,stCliente a)///pasar file
 void muestaArchivoClientes(char archivo[])
 {
 
-    int comp=fopen(archivo,"r");
+    //int comp=fopen(archivo,"r");
     stCliente a;
 
-    if(comp>0)
+    // if(comp>0)
+    //{
+    FILE *archi=fopen(archivo,"rb");
+    if(archi)
     {
-        FILE *archi=fopen(archivo,"rb");
-        if(archi)
+        while(fread(&a,sizeof(stCliente),1,archi)>0)
         {
-            while(fread(&a,sizeof(stCliente),1,archi)>0)
-            {
-                printf("ID -%d-\n",a.id);
-                printf("Numero de cliente: %d\n",a.nroCliente);
-                printf("Nombre: %s\n",a.nombre);
-                printf("Apellido: %s\n",a.apellido);
-                printf("D.N.I: %s\n",a.dni);
-                printf("Email: %s\n",a.email);
-                printf("Domicilio: %s\n",a.domicilio);
-                printf("Movil: %s\n",a.movil);
+            printf("ID -%d-\n",a.id);
+            printf("Numero de cliente: %d\n",a.nroCliente);
+            printf("Nombre: %s\n",a.nombre);
+            printf("Apellido: %s\n",a.apellido);
+            printf("D.N.I: %s\n",a.dni);
+            printf("Email: %s\n",a.email);
+            printf("Domicilio: %s\n",a.domicilio);
+            printf("Movil: %s\n",a.movil);
 
-                printf("Estado %d\n",a.baja);
+            printf("Estado %d\n",a.baja);
 
-            }
-            fclose(archi);
         }
+        fclose(archi);
     }
+    //}
     else
     {
         printf("EL archivo no existe o esta dañado!!!\n");
@@ -352,233 +373,241 @@ void filtraClientes(char archivo[],char archivoConsumo[])
     stCliente a;
     stConsumos b;
     int opcion;
-char continuar=0;
+    char continuar=0;
     FILE *archi=fopen(archivo,"rb");
     FILE *archicon=fopen(archivoConsumo,"rb");
-while(continuar!=27)
- {
-    printf("***********************Preciones ESC para salir cualquier tecla para continuar****************************\n");
-    fflush(stdin);
-    continuar=getch();
-    if(continuar!=27){
-    printf("ingrese una opcion\n");
-    printf("*Id cliente-1\n");
-    printf("* Nombre-2\n");
-    printf("* Apellido-3\n");
-    printf("* D.n.i-4\n");
-    printf("* Email-5\n");
-    printf("* Domicilio-6\n");
-    printf("* Nmro de movil-7\n");
-    scanf("%d",&opcion);
-
-
-    if(archi)
+    while(continuar!=27)
     {
-
-        char mander[50];
-        int dato;
-        char datoConsumo=0;
-        switch(opcion)
+        FILE *archi=fopen(archivo,"rb");
+        FILE *archicon=fopen(archivoConsumo,"rb");
+        printf("***********************Preciones ESC para salir cualquier tecla para continuar****************************\n");
+        fflush(stdin);
+        continuar=getch();
+        if(continuar!=27)
         {
-        case 1:
-            printf("Ingrese el numero de cliente a buscar\n");
-            scanf("%d",&dato);
-            printf("*************Opciones de busqueda y carga****************************\n");
-            printf("\n");
-            printf("\n*Ver todos los consumos? precione s\n\n*Filtral por fecha precione f\n");
-            printf("\n*Cargar nuevos datos de consumo precione c\n");
-            printf("\n*Precione escape para salir o cualquier tecla para omitir\n");
-            printf("\n*Precione M para volver al menu anterior\n");
-            printf("\n");
-            printf("************************************************************************\n");
-            datoConsumo=getch();
-            continuar=datoConsumo;
-            if(datoConsumo=='m'||datoConsumo=='M'){
-                filtraClientes(archivo,archivoConsumo);
-            }
-            while(fread(&a,sizeof(stCliente),1,archi)>0)
+            printf("                        ***************Ingrese una opcion**************\n");
+            printf("* Id cliente-1\n");
+            printf("* Nombre-2\n");
+            printf("* Apellido-3\n");
+            printf("* D.n.i-4\n");
+            printf("* Email-5\n");
+            printf("* Domicilio-6\n");
+            printf("* Nmro de movil-7\n");
+            scanf("%d",&opcion);
+
+
+            if(archi)
             {
-                if(a.nroCliente== dato)
+
+                char mander[50];
+                int dato;
+                char datoConsumo=0;
+                switch(opcion)
                 {
-
-                    muestraUnCliente(a);
-                    if(datoConsumo=='c'||datoConsumo=='C'){
-                        printf("******Carga datos consumo*******\n");
-
-                    cargaDatosConsumo(archivoConsumo,a);
-                    }
-
-                   if(datoConsumo=='f'||datoConsumo=='F'){
-                    muestraConsumoConFiltro(archivoConsumo,a);
-                   }
-                    if(datoConsumo=='s'||datoConsumo=='S')
+                case 1:
+                    printf("Ingrese el numero de cliente a buscar\n");
+                    scanf("%d",&dato);
+                    printf("*************Opciones de busqueda y carga****************************\n");
+                    printf("\n");
+                    printf("\n*Ver todos los consumos? precione s\n\n*Filtral por fecha precione f\n");
+                    printf("\n*Cargar nuevos datos de consumo precione c\n");
+                    printf("\n*Precione escape para salir o cualquier tecla para omitir\n");
+                    printf("\n*Precione M para volver al menu anterior\n");
+                    printf("\n");
+                    printf("************************************************************************\n");
+                    datoConsumo=getch();
+                    continuar=datoConsumo;
+                    if(datoConsumo=='m'||datoConsumo=='M')
                     {
-                        printf("********Consumos*********\n");
-                        while(fread(&b,sizeof(stConsumos),1,archicon)>0)
+                        filtraClientes(archivo,archivoConsumo);
+                    }
+                    while(fread(&a,sizeof(stCliente),1,archi)>0)
+                    {
+                        if(a.nroCliente== dato)
                         {
-                            if(a.nroCliente==b.idCliente)
+
+                            muestraUnCliente(a);
+                            if(datoConsumo=='c'||datoConsumo=='C')
                             {
-                                muestraUnConsumo(b);
+                                printf("******Carga datos consumo*******\n");
+
+                                cargaDatosConsumo(archivoConsumo,a);
+                            }
+
+                            if(datoConsumo=='f'||datoConsumo=='F')
+                            {
+                                muestraConsumoConFiltro(archivoConsumo,a);
+                            }
+                            if(datoConsumo=='s'||datoConsumo=='S')
+                            {
+                                printf("********Consumos*********\n");
+                                while(fread(&b,sizeof(stConsumos),1,archicon)>0)
+                                {
+                                    if(a.nroCliente==b.idCliente)
+                                    {
+                                        muestraUnConsumo(b);
+
+                                    }
+                                }
 
                             }
                         }
-
                     }
-                }
-            }
-            printf("Precione ESC para salir \n");
-            fflush(stdin);
-            continuar=getch();
-            system("pause");
-            system("cls");
-            break;
-        case 2:
-            fflush(stdin);
-            printf("Ingrese nombre de cliente a buscar\n");
-            fflush(stdin);
-            scanf("%s",mander);
-            printf("Ver consumo? precione s para si\n");
-            datoConsumo=getch();
-            while(fread(&a,sizeof(stCliente),1,archi)>0)
-            {
-                if(strcmp(a.nombre,mander)==0)
-                {
-                    muestraUnCliente(a);
-                    if(datoConsumo=='s')
+                    printf("Precione ESC para salir \n");
+                    fflush(stdin);
+                    continuar=getch();
+                    system("pause");
+                    system("cls");
+                    break;
+                case 2:
+                    fflush(stdin);
+                    printf("Ingrese nombre de cliente a buscar\n");
+                    fflush(stdin);
+                    scanf("%s",mander);
+                    printf("*************Opciones****************************\n");
+                    printf("\n");
+                    printf("\n*Precione ESC para salir,Enter para continuar \n");
+                    printf("\n*Precione M para volver al menu anterior\n");
+                    printf("\n");
+                    printf("************************************************************************\n");
+                    datoConsumo=getch();
+                    continuar=datoConsumo;
+                    if(datoConsumo=='m'||datoConsumo=='M')
                     {
-                        printf("********Consumos*********\n");
-                        while(fread(&b,sizeof(stConsumos),1,archicon)>0)
+                        filtraClientes(archivo,archivoConsumo);
+                    }
+
+                    while(fread(&a,sizeof(stCliente),1,archi)>0)
+                    {
+                        if(strcmp(a.nombre,mander)==0)
                         {
-                            if(a.nroCliente==b.idCliente)
+                            muestraUnCliente(a);
+                        }
+
+                    }//fclose(archi);
+
+                    system("pause");
+                    system("cls");
+                    break;
+                case 3:
+                    printf("Ingrese apellido de cliente a buscar\n");
+                    fflush(stdin);
+                    scanf("%s",mander);
+                    printf("Ver consumo? precione s para si\n");
+                    datoConsumo=getch();
+                    while(fread(&a,sizeof(stCliente),1,archi)>0)
+                    {
+                        if(strcmp(a.apellido,mander)==0)
+                        {
+                            muestraUnCliente(a);
+                            if(datoConsumo=='s')
                             {
+                                printf("********Consumos*********\n");
                                 muestraUnConsumo(b);
                             }
                         }
                     }
-                }
-            }
-            system("pause");
-            system("cls");
-            break;
-        case 3:
-            printf("Ingrese apellido de cliente a buscar\n");
-            fflush(stdin);
-            scanf("%s",mander);
-            printf("Ver consumo? precione s para si\n");
-            datoConsumo=getch();
-            while(fread(&a,sizeof(stCliente),1,archi)>0)
-            {
-                if(strcmp(a.apellido,mander)==0)
-                {
-                    muestraUnCliente(a);
-                    if(datoConsumo=='s')
+                    system("pause");
+                    system("cls");
+                    break;
+                case 4:
+                    printf("Ingrese D.N.I de cliente a buscar\n");
+                    fflush(stdin);
+                    scanf("%s",mander);
+                    printf("Ver consumo? precione s para si\n");
+                    datoConsumo=getch();
+                    while(fread(&a,sizeof(stCliente),1,archi)>0)
                     {
-                        printf("********Consumos*********\n");
-                        muestraUnConsumo(b);
+                        if(strcmp(a.dni,mander)==0)
+                        {
+                            muestraUnCliente(a);
+                            if(datoConsumo=='s')
+                            {
+                                printf("********Consumos*********\n");
+                                muestraUnConsumo(b);
+                            }
+                        }
                     }
-                }
-            }
-            system("pause");
-            system("cls");
-            break;
-        case 4:
-            printf("Ingrese D.N.I de cliente a buscar\n");
-            fflush(stdin);
-            scanf("%s",mander);
-            printf("Ver consumo? precione s para si\n");
-            datoConsumo=getch();
-            while(fread(&a,sizeof(stCliente),1,archi)>0)
-            {
-                if(strcmp(a.dni,mander)==0)
-                {
-                    muestraUnCliente(a);
-                    if(datoConsumo=='s')
+                    system("pause");
+                    system("cls");
+                    break;
+                case 5:
+                    printf("Ingrese email de cliente a buscar\n");
+                    fflush(stdin);
+                    scanf("%s",mander);
+                    printf("Ver consumo? precione s para si\n");
+                    datoConsumo=getch();
+                    if(strchr(mander, '@' )==NULL)
                     {
-                        printf("********Consumos*********\n");
-                        muestraUnConsumo(b);
+                        printf("Ingrese email de cliente a buscar\n");
+                        scanf("%s",mander);
+                        fflush(stdin);
                     }
-                }
-            }
-            system("pause");
-            system("cls");
-            break;
-        case 5:
-            printf("Ingrese email de cliente a buscar\n");
-            fflush(stdin);
-            scanf("%s",mander);
-            printf("Ver consumo? precione s para si\n");
-            datoConsumo=getch();
-            if(strchr(mander, '@' )==NULL)
-            {
-                printf("Ingrese email de cliente a buscar\n");
-                scanf("%s",mander);
-                fflush(stdin);
-            }
-            while(fread(&a,sizeof(stCliente),1,archi)>0)
-            {
-                if(strcmp(a.email,mander)==0)
-                {
-                    muestraUnCliente(a);
-                    if(datoConsumo=='s')
+                    while(fread(&a,sizeof(stCliente),1,archi)>0)
                     {
-                        printf("********Consumos*********\n");
-                        muestraUnConsumo(b);
+                        if(strcmp(a.email,mander)==0)
+                        {
+                            muestraUnCliente(a);
+                            if(datoConsumo=='s')
+                            {
+                                printf("********Consumos*********\n");
+                                muestraUnConsumo(b);
+                            }
+                        }
                     }
-                }
-            }
-            system("pause");
-            system("cls");
-            break;
-        case 6:
-            printf("Ingrese domicilio de cliente a buscar\n");
-            fflush(stdin);
-            scanf("%s",mander);
-            printf("Ver consumo? precione s para si\n");
-            datoConsumo=getch();
-            while(fread(&a,sizeof(stCliente),1,archi)>0)
-            {
-                if(strcmp(a.domicilio,mander)==0)
-                {
-                    muestraUnCliente(a);
-                    if(datoConsumo=='s')
+                    system("pause");
+                    system("cls");
+                    break;
+                case 6:
+                    printf("Ingrese domicilio de cliente a buscar\n");
+                    fflush(stdin);
+                    scanf("%s",mander);
+                    printf("Ver consumo? precione s para si\n");
+                    datoConsumo=getch();
+                    while(fread(&a,sizeof(stCliente),1,archi)>0)
                     {
-                        printf("********Consumos*********\n");
-                        muestraUnConsumo(b);
+                        if(strcmp(a.domicilio,mander)==0)
+                        {
+                            muestraUnCliente(a);
+                            if(datoConsumo=='s')
+                            {
+                                printf("********Consumos*********\n");
+                                muestraUnConsumo(b);
+                            }
+                        }
                     }
-                }
-            }
-            system("pause");
-            system("cls");
-            break;
-        case 7:
-            printf("Ingrese numero de movil de cliente a buscar\n");
-            fflush(stdin);
-            scanf("%s",mander);
-            printf("Ver todos los consumos? precione s para si\n");
-            datoConsumo=getch();
-            while(fread(&a,sizeof(stCliente),1,archi)>0)
-            {
-                if(strcmp(a.movil,mander)==0)
-                {
-                    muestraUnCliente(a);
-                    if(datoConsumo=='s')
+                    system("pause");
+                    system("cls");
+                    break;
+                case 7:
+                    printf("Ingrese numero de movil de cliente a buscar\n");
+                    fflush(stdin);
+                    scanf("%s",mander);
+                    printf("Ver todos los consumos? precione s para si\n");
+                    datoConsumo=getch();
+                    while(fread(&a,sizeof(stCliente),1,archi)>0)
                     {
-                        printf("********Consumos*********\n");
-                        muestraUnConsumo(b);
+                        if(strcmp(a.movil,mander)==0)
+                        {
+                            muestraUnCliente(a);
+                            if(datoConsumo=='s')
+                            {
+                                printf("********Consumos*********\n");
+                                muestraUnConsumo(b);
+                            }
+                        }
                     }
-                }
-            }
-            system("pause");
-            system("cls");
-            break;
+                    system("pause");
+                    system("cls");
+                    break;
 
+                }
+
+
+                fclose(archi);
+            }
         }
-
-
-        fclose(archi);
     }
-     }
-     }
 
 }
 
@@ -700,7 +729,8 @@ void cargaDatosConsumo(char archivoConsumo[],stCliente b)
     int validos=cuentaRegistros(archivoConsumo, sizeof(stConsumos));
     int comprueba=fopen(archivoConsumo,"r");///comprueba si el archivo existe xon anterioridad
     FILE *archi=fopen(archivoConsumo,"ab");
-
+    int flag=0;
+    int mesesDiasCuenta;
     if(archi)
     {
         while(opcion!=27)
@@ -708,10 +738,62 @@ void cargaDatosConsumo(char archivoConsumo[],stCliente b)
             a.idCliente=b.nroCliente;
             printf("Ingrese anio de consumo \n");
             scanf("%d",&a.anio);
+            if(a.anio>ANIO_ACTUAL)
+            {
+                while(a.anio>ANIO_ACTUAL)
+                {
+                    printf("Ingrese anio de consumo \n");
+                    scanf("%d",&a.anio);
+                }
+            }
+            flag=anioBisiesto(a);
             printf("Ingrese mes\n");
             scanf("%d",&a.mes);
+            if(a.mes<1||a.mes>12)
+            {
+                while(a.mes<1||a.mes>12)
+                {
+                    printf("Ingrese mes\n");
+                    scanf("%d",&a.mes);
+                }
+            }
+
             printf("Ingrese dia\n");
             scanf("%d",&a.dia);
+            /// calcula el mes y los dias
+            mesesDiasCuenta=mesesYdias(a,flag);
+            if(flag==1&&a.mes==2&&a.dia<1||a.dia>29)
+            {
+                while(a.dia<1||a.dia>29)
+                {
+                    printf("Ingrese dia\n");
+                    scanf("%d",&a.dia);
+                }
+            }
+            if(mesesDiasCuenta==2&&a.dia<1||a.dia>28)
+            {
+                while(a.dia<1||a.dia>28)
+                {
+                    printf("Ingrese dia\n");
+                    scanf("%d",&a.dia);
+                }
+            }
+            if(mesesDiasCuenta==3&&a.dia<1||a.dia>30)
+            {
+                while(a.dia<1||a.dia>30)
+                {
+                    printf("Ingrese dia\n");
+                    scanf("%d",&a.dia);
+                }
+            }
+            if(mesesDiasCuenta==4&&a.dia<1||a.dia>31)
+            {
+                while(a.dia<1||a.dia>31)
+                {
+                    printf("Ingrese dia\n");
+                    scanf("%d",&a.dia);
+                }
+            }
             printf("Ingrese datos consumidos\n");
             scanf("%d",&a.datosConsumidos);
             dato=a.datosConsumidos;
@@ -729,6 +811,39 @@ void cargaDatosConsumo(char archivoConsumo[],stCliente b)
         fclose(archi);
         filtraClientes("clientes.bin",archivoConsumo);
     }
+}
+int mesesYdias(stConsumos a,int flag)
+{
+    int valB;
+    int dias=0;
+    int febreroB [29];
+    valB=anioBisiesto(a);///29 dias febrero
+    if(valB!=0)
+    {
+        dias=1;
+    }
+    else if(valB==0&&a.mes==2) ///28 diasfebrero
+    {
+        dias=2;
+    }
+    else if(a.mes==4||a.mes==6||a.mes==9||a.mes==11)///meses de 30 dias
+    {
+        dias=3;
+    }
+    else
+    {
+        dias=4;///meses 31 dias
+    }
+    return dias;
+}
+int anioBisiesto(stConsumos a)
+{
+    int flag=0;
+    if ( a.anio % 4 == 0 && a.anio % 100 != 0 || a.anio % 400 == 0 )
+    {
+        flag=1;
+    }
+    return flag;
 }
 ///DEvuelve la suma de todos los consumos en la misma fecha
 stConsumos agregaConsumosDias(char archivo[],stConsumos a,int dato)
@@ -755,7 +870,7 @@ stConsumos agregaConsumosDias(char archivo[],stConsumos a,int dato)
             }
 
         }
-                a.datosConsumidos=suma;
+        a.datosConsumidos=suma;
 //                fseek(archi, -1 * sizeof(stConsumos), SEEK_CUR);
 //                fwrite(&b, sizeof(stConsumos), 1, archi);
 //
@@ -764,10 +879,12 @@ stConsumos agregaConsumosDias(char archivo[],stConsumos a,int dato)
     fclose(archi);
     return a;
 }
-int cuentaRegistros(char archivo[], int tamanioSt){
+int cuentaRegistros(char archivo[], int tamanioSt)
+{
     int cantidadRegistros = 0;
     FILE *p = fopen(archivo, "rb");
-    if(p!=NULL){
+    if(p!=NULL)
+    {
         fseek(p, 0, SEEK_END);
         cantidadRegistros=ftell(p)/tamanioSt;
         fclose(p);

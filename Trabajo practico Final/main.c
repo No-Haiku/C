@@ -789,8 +789,8 @@ void cargaDatosConsumo(char archivoConsumo[],stCliente b)
     stConsumos a;
     int dato=0;
     int validos=cuentaRegistros(archivoConsumo, sizeof(stConsumos));
-    int comprueba=fopen(archivoConsumo,"r");///comprueba si el archivo existe xon anterioridad
-    FILE *archi=fopen(archivoConsumo,"ab");
+
+    FILE *archi=fopen(archivoConsumo,"a+b");
     int flag=0;
     int mesesDiasCuenta;
     if(archi)
@@ -929,6 +929,8 @@ stConsumos agregaConsumosDias(char archivo[],stConsumos a,int dato)
 
 
 
+            }else{
+                suma=dato;
             }
 
         }

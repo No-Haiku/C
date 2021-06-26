@@ -37,7 +37,7 @@ void modificaConsumo(char archivo[],int nroClnt);
 void muestraXAnio(char consumos[],stCliente b);
 void muestraXRangoDeAnios(char consumos[],stCliente b);
 void muestraXMes(char consumos[],stCliente b);
-void muestraXDatosConsumosFiltro(char consumos[],stCliente b,int datoanio,int datoanio2,int datomes,int datomes2,int datodia,int datodia2);
+void muestraXDatosConsumosFiltro(char consumos[],stCliente b,stConsumos c);
 void cargaDatosConsumo(char archivoConsumo[],stCliente b);
 void muestraUnConsumo(stConsumos a);
 int verificaSiRepiteDatoCliente(char archivo[],int id,stCliente a);
@@ -385,10 +385,10 @@ void filtraClientes(char archivo[],char archivoConsumo[])
             {
                 if(a.nroCliente== dato)
                 {
-
+                    muestraConsumoConFiltro(archivoConsumo,a);
                     muestraUnCliente(a);
                     printf("carga datos consumo\n");
-                    cargaDatosConsumo(archivoConsumo,a);
+                   // cargaDatosConsumo(archivoConsumo,a);
                     if(datoConsumo=='s')
                     {
                         printf("********Consumos*********\n");
@@ -627,6 +627,15 @@ void muestraConsumoConFiltro(char consumos[],stCliente b)///STCLIENTE PASAR SOLO
     if(archi)
     {
         printf("archivo abierto!!!\n");
+        printf("**********Ingrese la fecha a buscar********\n");
+        printf("ingrse anio\n");
+        scanf("%d", &a.anio);
+        printf("ingrse mes\n");
+        scanf("%d",&a.mes);
+        printf("ingrse dia\n");
+        scanf("%d",&a.dia);
+        muestraXDatosConsumosFiltro(consumos,b,a);
+        system("pause");
     }
 
     fclose(archi);
@@ -634,19 +643,17 @@ void muestraConsumoConFiltro(char consumos[],stCliente b)///STCLIENTE PASAR SOLO
 }
 
 ///MUESTRA TODOS LOS DATOS DE STCONSUMOS CON LA FUNCION DE FILTROS
-void muestraXDatosConsumosFiltro(char consumos[],stCliente b,int datoanio,int datoanio2,int datomes,int datomes2,int datodia,int datodia2)
+void muestraXDatosConsumosFiltro(char consumos[],stCliente b,stConsumos c)
 {
-
     stConsumos a;
     FILE *archi=fopen(consumos,"rb");
 
     if(archi)
     {
 
-
         while(fread(&a,sizeof(stConsumos),1,archi)>0)
         {
-            if(a.idCliente==b.id&&a.anio>=datoanio&&a.anio<=datoanio2&&a.mes>=datomes&&a.mes<=datomes2&&a.dia>=datodia&&a.dia<=datodia2)
+            if(a.idCliente==b.nroCliente&&a.anio==c.anio&&a.mes==c.mes&&a.dia==c.dia)
             {
                 muestraUnConsumo(a);
             }

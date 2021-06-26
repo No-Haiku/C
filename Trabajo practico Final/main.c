@@ -51,27 +51,76 @@ int verificaArregloDni(stCliente arreglo[],int validos,stCliente a);
 stConsumos agregaConsumosDias(char archivo[],stConsumos a,int dato);
 int anioBisiesto(stConsumos a);
 int mesesYdias(stConsumos a,int flag);
+void muestaArchivoConsumos(char archivoConsumos[]);
 int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
     // muestraArchivo("nomb_ape.bin");
     int vldsCrgaClnt=0;
     stCliente b;
-    //cargaDatosCliente("clientes.bin");
+    char opcion=0;
+    int opcion2=0;
+    //
     printf("muestra clientes\n");
-    muestaArchivoClientes("clientes.bin");
+
     ///modificaCliente("clientes.bin",1);
     /// muestaArchivoClientes("clientes.bin");
     printf("\nFiltra clientes\n");
-    filtraClientes("clientes.bin","consumo.bin");
+
 //    printf("muestra consumo con filtro\n");
 //    muestraConsumoConFiltro("consumo.bin",b);
 //printf("carga consumos\n");
 //cargaDatosConsumo("consumo.bin",vldsCrgaConsu,1);
 
-    do{
+    do
+    {
+        printf("                    ********************BIENVENIDO AL GESTOR DE CLIENTES********************************\n\n");
+        printf("*-OPCION 1 ->FILTRA CLIENTES AGREGA CONSUMOS Y MODIFICA POR ID\n\n");
+        printf("*-OPCION 2 ->CONSUMOS BUSQUEDA NRO DE CLIENTE Y FECHA\n\n");
+        printf("*-OPCION 3 -> VER TODOS LOS CLIENTES\n\n");
+        printf("*-OPCION 4 -> CARGA CLIENTES\n\n");
+        printf("*-OPCION 5 -> VER TODOS LOS CONSUMOS\n\n");
 
-    }while(opcion!=27);
+
+        scanf("%d",&opcion2);
+
+
+        switch(opcion2)
+        {
+        case 1:
+            filtraClientes("clientes.bin","consumo.bin");
+            system("pause");
+            system("cls");
+            break;
+        case 2:
+            printf("                ********************************FILTRA CONSUMOS*********************\n");
+            printf("Ingrese el numero de cliente\n");
+            scanf("%d",&b.nroCliente);
+            muestraConsumoConFiltro("consumo.bin",b);
+            system("pause");
+            system("cls");
+            break;
+        case 3:
+            printf("               **********************LISTA DE TODOS LOS CLIENTES********************\n");
+            muestaArchivoClientes("clientes.bin");
+            system("pause");
+            system("cls");
+            break;
+        case 4:
+            printf("               ***************************CARGAR CLIENTES*****************************\n");
+            cargaDatosCliente("clientes.bin");
+            break;
+        case 5:
+            printf("               **********************LISTA DE TODOS LOS CONSUMOS********************\n");
+            muestaArchivoConsumos("consumo.bin");
+            break;
+
+        }
+
+        printf("                        **************************PRECIONES ESC PARA SALIR************************\n");
+        opcion=getch();
+    }
+    while(opcion!=27);
     return 0;
 }
 
@@ -131,7 +180,7 @@ void cargaDatosCliente(char archivo[])
                 }
             }
             printf("Domicilio\n");
-            scanf("%[^\n]",a.domicilio);
+            scanf("%d",a.domicilio);///si uso[^\n] me genera un error en la carga
             printf("Movil\n");
             scanf("%s",a.movil);
             a.baja=0;
@@ -892,3 +941,24 @@ int cuentaRegistros(char archivo[], int tamanioSt)
 
     return cantidadRegistros;
 }
+void muestaArchivoConsumos(char archivoConsumos[])
+{
+
+    //int comp=fopen(archivo,"r");
+    stConsumos a;
+
+    // if(comp>0)
+    //{
+    FILE *archi=fopen(archivoConsumos,"rb");
+    if(archi)
+    {
+        while(fread(&a,sizeof(stConsumos),1,archi)>0)
+        {
+
+
+            muestraUnConsumo(a);
+
+        }
+        fclose(archi);
+    }
+     }

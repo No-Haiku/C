@@ -352,10 +352,15 @@ void filtraClientes(char archivo[],char archivoConsumo[])
     stCliente a;
     stConsumos b;
     int opcion;
-
+char continuar=0;
     FILE *archi=fopen(archivo,"rb");
     FILE *archicon=fopen(archivoConsumo,"rb");
-
+while(continuar!=27)
+ {
+    printf("***********************Preciones ESC para salir cualquier tecla para continuar****************************\n");
+    fflush(stdin);
+    continuar=getch();
+    if(continuar!=27){
     printf("ingrese una opcion\n");
     printf("*Id cliente-1\n");
     printf("* Nombre-2\n");
@@ -365,6 +370,7 @@ void filtraClientes(char archivo[],char archivoConsumo[])
     printf("* Domicilio-6\n");
     printf("* Nmro de movil-7\n");
     scanf("%d",&opcion);
+
 
     if(archi)
     {
@@ -377,11 +383,19 @@ void filtraClientes(char archivo[],char archivoConsumo[])
         case 1:
             printf("Ingrese el numero de cliente a buscar\n");
             scanf("%d",&dato);
-//            printf("muestra consumo con filtro\n");
-//            muestraConsumoConFiltro(archicon,a.id);
-            printf("Ver todos los consumos? precione s, f para filtral por fecha\n");
-            printf("O c para cargar nuevos datos de consumo\n");
+            printf("*************Opciones de busqueda y carga****************************\n");
+            printf("\n");
+            printf("\n*Ver todos los consumos? precione s\n\n*Filtral por fecha precione f\n");
+            printf("\n*Cargar nuevos datos de consumo precione c\n");
+            printf("\n*Precione escape para salir o cualquier tecla para omitir\n");
+            printf("\n*Precione M para volver al menu anterior\n");
+            printf("\n");
+            printf("************************************************************************\n");
             datoConsumo=getch();
+            continuar=datoConsumo;
+            if(datoConsumo=='m'||datoConsumo=='M'){
+                filtraClientes(archivo,archivoConsumo);
+            }
             while(fread(&a,sizeof(stCliente),1,archi)>0)
             {
                 if(a.nroCliente== dato)
@@ -412,6 +426,9 @@ void filtraClientes(char archivo[],char archivoConsumo[])
                     }
                 }
             }
+            printf("Precione ESC para salir \n");
+            fflush(stdin);
+            continuar=getch();
             system("pause");
             system("cls");
             break;
@@ -554,11 +571,14 @@ void filtraClientes(char archivo[],char archivoConsumo[])
             system("pause");
             system("cls");
             break;
+
         }
 
 
         fclose(archi);
     }
+     }
+     }
 
 }
 

@@ -37,21 +37,23 @@ void modificaConsumo(char archivo[],int nroClnt);
 void muestraXAnio(char consumos[],stCliente b);
 void muestraXRangoDeAnios(char consumos[],stCliente b);
 void muestraXMes(char consumos[],stCliente b);
-void muestraXDatosConsumosFiltro(char consumos[],stCliente b,int datoanio,int datoanio2,int datomes,int datomes2,int datodia,int datodia2);
+void muestraXDatosConsumosFiltro(char consumos[],stCliente b,stConsumos c);
 void cargaDatosConsumo(char archivoConsumo[],stCliente b);
 void muestraUnConsumo(stConsumos a);
 int verificaSiRepiteDatoCliente(char archivo[],int id,stCliente a);
-void agregaConsumosDias(char archivo[],stConsumos a);
 int cuentaRegistros(char archivo[], int tamanioSt);
 void guardaNroClienteMemoriaDinamica(int arreglo[],int dim,int validos,int dato);
 int verificaArregloNroClte(int arreglo[],int validos,int dato);
+void guardaDniMemoriaDinamica(stCliente arreglo[],int validos,stCliente a);
+int verificaArregloDni(stCliente arreglo[],int validos,stCliente a);
+stConsumos agregaConsumosDias(char archivo[],stConsumos a,int dato);
 int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
     // muestraArchivo("nomb_ape.bin");
     int vldsCrgaClnt=0;
     stCliente b;
-    cargaDatosCliente("clientes.bin");
+    //cargaDatosCliente("clientes.bin");
     printf("muestra clientes\n");
     muestaArchivoClientes("clientes.bin");
     ///modificaCliente("clientes.bin",1);
@@ -77,10 +79,12 @@ void cargaDatosCliente(char archivo[])
     int guardaNroCli;
     int flag=-1;
     int flag2=-1;
+    int flag3=-1;
     int dim=100;
     int validosNroClt=0;
+    int validosDni=0;
     int arregloNroCliente [100];
-    char arregloDni [100][100];
+    stCliente arregloDni  [100];
 
     if(archi)
     {
@@ -91,10 +95,7 @@ void cargaDatosCliente(char archivo[])
             guardaNroCli=a.nroCliente;
             validosNroClt++;
             guardaNroClienteMemoriaDinamica(arregloNroCliente,dim,validosNroClt,guardaNroCli);
-            printf("Esto es un printf\n");
-
             flag2=verificaArregloNroClte(arregloNroCliente,validosNroClt,guardaNroCli);
-            printf("\n Datos de flag2 %d\n",flag2);
             fflush(stdin);
             printf("Nombre\n");
             scanf("%s",a.nombre);
@@ -104,6 +105,10 @@ void cargaDatosCliente(char archivo[])
             fflush(stdin);
             printf("D.N.I\n");
             scanf("%s",a.dni);
+            validosDni++;
+            guardaDniMemoriaDinamica(arregloDni,validosDni,a);
+            flag3=verificaArregloDni(arregloDni,validosDni,a);
+            printf("Este el flag 3 dni %d\n",flag3);
             fflush(stdin);
             printf("Email\n");
             scanf("%s",a.email);
@@ -124,7 +129,7 @@ void cargaDatosCliente(char archivo[])
             flag=verificaSiRepiteDatoCliente(archivo,guardaNroCli,a);///pasar directamente archivo , archi no me lo leia
             printf("dato de flag %d\n",flag);
             printf("numero cliente guardado %d\n",guardaNroCli);
-            if(flag==0&&flag2<=1)
+            if(flag==0&&flag2<=1&&flag3<=1)///aca verifico que no exista mas de una copia de los datos si esta todo ok guarda el archivo
             {
                 a.id=validos;
                 validos++;
@@ -137,9 +142,9 @@ void cargaDatosCliente(char archivo[])
                 }
                 fwrite(&a,sizeof(stCliente),1,archi);
             }
-            if(flag==1||flag2>1){
+            if(flag==1||flag2>1||flag3>1){
                 printf("ERROR LOS DATOS NO SERAN GUARDADOS REVISE QUE EL NUMERO DE CLIENTE O EL USUARIO DNI NO EXISTA!!!\n");
-                printf("VUELVA A INTENTARLO A ACONTINUACION...")
+                printf("VUELVA A INTENTARLO DE NUEVO A ACONTINUACION...");
             }
 
 
@@ -151,48 +156,60 @@ void cargaDatosCliente(char archivo[])
     }
 }
 ///comprueba que el numero de cliente no aya sido escrito es para solucionar el error que no lo reconoce en sesion activa
+///ESTA FUNCION GUARDA EL NUMERO DE CLIENTE DE LA MEMORIA DINAMICA EN UN ARREGLO
 void guardaNroClienteMemoriaDinamica(int arreglo[],int dim,int validos,int dato){
     int i;
-    printf("hola\n");
     for(i=0;i<validos;i++){
         arreglo[i]=dato;
-        printf("hola2\n");
     }
-    printf("hola3\n");
-        for(i=0;i<validos;i++){
 
-        printf("hola %d\n",arreglo[i]);
-    }
 }
+
+/// ESTA FUNCION VERIFICA QUE EN LA SESION ACTUAL NO SE AYA REPETIDO EL DATO
 int verificaArregloNroClte(int arreglo[],int validos,int dato){
-    printf("Hla mama\n");
     int i=0;
     int flag=0;
     while(i<validos){
-          printf("Hla mama2 %d\n",arreglo[i]);
 
         if(arreglo[i]==dato){
             flag++;
-            printf("son iguales!!!!n");
         }
         i++;
     }
-    printf("final del while %d",flag);
     return flag;
 }
-void guardaDniMemoriaDinamica(char arreglo[],int dim,int validos,stCliente a){
+///ESTA FUNCION GUARDA EL NUMERO DE DNI*ESTRUCTURA COMPLETA EN OTRA ESTRUCTURA* DE LA MEMORIA DINAMICA EN UN ARREGLO
+void guardaDniMemoriaDinamica(stCliente arreglo[],int validos,stCliente a){
     int i;
+    printf("hola %s\n",a.dni);
     printf("hola\n");
     for(i=0;i<validos;i++){
-        arreglo[i]=a.dni;
+        arreglo[i]=a;
         printf("hola2\n");
     }
     printf("hola3\n");
         for(i=0;i<validos;i++){
 
-        printf("hola %s\n",arreglo[i]);
+        printf("hola %s\n",arreglo[i].dni);
     }
 }
+/// PENSANDOLO MEJOR PUDE CREAR UNA SOLA FUNCION PARA TODO COMPROBANDO LA ESTRUCTURA DIRECTAMENDE
+/// LO DEJO PARA DESPUES PRIMERO TENGO QUE CUMPLIR LAS CONSIGNAR DESPUES LO PULIMOS XD
+/// ESTA FUNCION VERIFICA QUE EN LA SESION ACTUAL NO SE AYA REPETIDO EL DATO
+int verificaArregloDni(stCliente arreglo[],int validos,stCliente a){
+    int i=0;
+    int flag=0;
+    int comprueba;
+    while(i<validos){
+        comprueba=strcmp(arreglo[i].dni,a.dni);
+        if(comprueba==0){
+            flag++;
+        }
+        i++;
+    }
+    return flag;
+}
+///verifica si el dni o el nmero de cliente se repite en el archivo
 int verificaSiRepiteDatoCliente(char archivo[],int nrc,stCliente a)///pasar file *archi
 {
     stCliente c;
@@ -329,7 +346,7 @@ void muestraUnCliente(stCliente a)
     printf("Movil: %s\n",a.movil);
     printf("Estado %d\n",a.baja);
 }
-
+///Filtra los clientes
 void filtraClientes(char archivo[],char archivoConsumo[])
 {
     stCliente a;
@@ -348,10 +365,11 @@ void filtraClientes(char archivo[],char archivoConsumo[])
     printf("* Domicilio-6\n");
     printf("* Nmro de movil-7\n");
     scanf("%d",&opcion);
+    char continuar=0;
 
     if(archi)
     {
-
+do{
         char mander[50];
         int dato;
         char datoConsumo=0;
@@ -360,9 +378,8 @@ void filtraClientes(char archivo[],char archivoConsumo[])
         case 1:
             printf("Ingrese el numero de cliente a buscar\n");
             scanf("%d",&dato);
-//            printf("muestra consumo con filtro\n");
-//            muestraConsumoConFiltro(archicon,a.id);
-            printf("Ver consumo? precione s para si\n");
+            printf("Ver todos los consumos? precione s, f para filtral por fecha\n");
+            printf("O c para cargar nuevos datos de consumo\n");
             datoConsumo=getch();
             while(fread(&a,sizeof(stCliente),1,archi)>0)
             {
@@ -370,7 +387,16 @@ void filtraClientes(char archivo[],char archivoConsumo[])
                 {
 
                     muestraUnCliente(a);
-                    if(datoConsumo=='s')
+                    if(datoConsumo=='c'||datoConsumo=='C'){
+                        printf("******Carga datos consumo*******\n");
+
+                    cargaDatosConsumo(archivoConsumo,a);
+                    }
+
+                   if(datoConsumo=='f'||datoConsumo=='F'){
+                    muestraConsumoConFiltro(archivoConsumo,a);
+                   }
+                    if(datoConsumo=='s'||datoConsumo=='S')
                     {
                         printf("********Consumos*********\n");
                         while(fread(&b,sizeof(stConsumos),1,archicon)>0)
@@ -378,6 +404,7 @@ void filtraClientes(char archivo[],char archivoConsumo[])
                             if(a.nroCliente==b.idCliente)
                             {
                                 muestraUnConsumo(b);
+
                             }
                         }
 
@@ -509,7 +536,7 @@ void filtraClientes(char archivo[],char archivoConsumo[])
             printf("Ingrese numero de movil de cliente a buscar\n");
             fflush(stdin);
             scanf("%s",mander);
-            printf("Ver consumo? precione s para si\n");
+            printf("Ver todos los consumos? precione s para si\n");
             datoConsumo=getch();
             while(fread(&a,sizeof(stCliente),1,archi)>0)
             {
@@ -526,9 +553,10 @@ void filtraClientes(char archivo[],char archivoConsumo[])
             system("pause");
             system("cls");
             break;
+
         }
 
-
+        }while(continuar!=27);
         fclose(archi);
     }
 
@@ -607,6 +635,15 @@ void muestraConsumoConFiltro(char consumos[],stCliente b)///STCLIENTE PASAR SOLO
     if(archi)
     {
         printf("archivo abierto!!!\n");
+        printf("**********Ingrese la fecha a buscar********\n");
+        printf("ingrse anio\n");
+        scanf("%d", &a.anio);
+        printf("ingrse mes\n");
+        scanf("%d",&a.mes);
+        printf("ingrse dia\n");
+        scanf("%d",&a.dia);
+        muestraXDatosConsumosFiltro(consumos,b,a);
+        system("pause");
     }
 
     fclose(archi);
@@ -614,19 +651,17 @@ void muestraConsumoConFiltro(char consumos[],stCliente b)///STCLIENTE PASAR SOLO
 }
 
 ///MUESTRA TODOS LOS DATOS DE STCONSUMOS CON LA FUNCION DE FILTROS
-void muestraXDatosConsumosFiltro(char consumos[],stCliente b,int datoanio,int datoanio2,int datomes,int datomes2,int datodia,int datodia2)
+void muestraXDatosConsumosFiltro(char consumos[],stCliente b,stConsumos c)
 {
-
     stConsumos a;
     FILE *archi=fopen(consumos,"rb");
 
     if(archi)
     {
 
-
         while(fread(&a,sizeof(stConsumos),1,archi)>0)
         {
-            if(a.idCliente==b.id&&a.anio>=datoanio&&a.anio<=datoanio2&&a.mes>=datomes&&a.mes<=datomes2&&a.dia>=datodia&&a.dia<=datodia2)
+            if(a.idCliente==b.nroCliente&&a.anio==c.anio&&a.mes==c.mes&&a.dia==c.dia)
             {
                 muestraUnConsumo(a);
             }
@@ -641,6 +676,7 @@ void cargaDatosConsumo(char archivoConsumo[],stCliente b)
 {
     char opcion=0;
     stConsumos a;
+    int dato=0;
     int validos=cuentaRegistros(archivoConsumo, sizeof(stConsumos));
     int comprueba=fopen(archivoConsumo,"r");///comprueba si el archivo existe xon anterioridad
     FILE *archi=fopen(archivoConsumo,"ab");
@@ -658,36 +694,55 @@ void cargaDatosConsumo(char archivoConsumo[],stCliente b)
             scanf("%d",&a.dia);
             printf("Ingrese datos consumidos\n");
             scanf("%d",&a.datosConsumidos);
+            dato=a.datosConsumidos;
             a.baja=0;
             a.id=validos;
             validos++;
-            agregaConsumosDias(archivoConsumo,a);
+
+            a=agregaConsumosDias(archivoConsumo,a,dato);
             fwrite(&a,sizeof(stConsumos),1,archi);
-            printf("Precione ESC para salir ,Cualquier tecla para continuar\n");
+
+            printf("Precione ESC para salir ,Cualquier tecla para continuar cargando consumos\n");
             opcion=getch();
 
         }
         fclose(archi);
+        filtraClientes("clientes.bin",archivoConsumo);
     }
 }
-void agregaConsumosDias(char archivo[],stConsumos a)
+///DEvuelve la suma de todos los consumos en la misma fecha
+stConsumos agregaConsumosDias(char archivo[],stConsumos a,int dato)
 {
     stConsumos b;
     int compara;
-    FILE *archi=fopen(archivo,"ab");
+    FILE *archi=fopen(archivo,"r+b");
+    int suma=0;
+    int flag=0;
+    ///rewind(archi);
     if(archi)
     {
-        while(fread(&b,sizeof(stCliente),1,archi)>0)
+        while(fread(&b,sizeof(stConsumos),1,archi)>0)
         {
 
             if(b.idCliente==a.idCliente&&b.anio==a.anio&&b.mes==a.mes&&b.dia==a.dia)
             {
-                b.datosConsumidos=b.datosConsumidos+a.datosConsumidos;
-                fwrite(&b,sizeof(stConsumos),1,archi);
+
+                suma=b.datosConsumidos+dato;
+
+
+
+
             }
+
         }
+                a.datosConsumidos=suma;
+//                fseek(archi, -1 * sizeof(stConsumos), SEEK_CUR);
+//                fwrite(&b, sizeof(stConsumos), 1, archi);
+//
+//                fseek(archi, sizeof(stCliente), SEEK_CUR);
     }
     fclose(archi);
+    return a;
 }
 int cuentaRegistros(char archivo[], int tamanioSt){
     int cantidadRegistros = 0;

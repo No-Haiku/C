@@ -379,17 +379,25 @@ void filtraClientes(char archivo[],char archivoConsumo[])
             scanf("%d",&dato);
 //            printf("muestra consumo con filtro\n");
 //            muestraConsumoConFiltro(archicon,a.id);
-            printf("Ver consumo? precione s para si\n");
+            printf("Ver todos los consumos? precione s, f para filtral por fecha\n");
+            printf("O c para cargar nuevos datos de consumo\n");
             datoConsumo=getch();
             while(fread(&a,sizeof(stCliente),1,archi)>0)
             {
                 if(a.nroCliente== dato)
                 {
-                    muestraConsumoConFiltro(archivoConsumo,a);
+
                     muestraUnCliente(a);
-                    printf("carga datos consumo\n");
-                   // cargaDatosConsumo(archivoConsumo,a);
-                    if(datoConsumo=='s')
+                    if(datoConsumo=='c'||datoConsumo=='C'){
+                        printf("******Carga datos consumo*******\n");
+
+                    cargaDatosConsumo(archivoConsumo,a);
+                    }
+
+                   if(datoConsumo=='f'||datoConsumo=='F'){
+                    muestraConsumoConFiltro(archivoConsumo,a);
+                   }
+                    if(datoConsumo=='s'||datoConsumo=='S')
                     {
                         printf("********Consumos*********\n");
                         while(fread(&b,sizeof(stConsumos),1,archicon)>0)
@@ -529,7 +537,7 @@ void filtraClientes(char archivo[],char archivoConsumo[])
             printf("Ingrese numero de movil de cliente a buscar\n");
             fflush(stdin);
             scanf("%s",mander);
-            printf("Ver consumo? precione s para si\n");
+            printf("Ver todos los consumos? precione s para si\n");
             datoConsumo=getch();
             while(fread(&a,sizeof(stCliente),1,archi)>0)
             {
@@ -699,12 +707,12 @@ void cargaDatosConsumo(char archivoConsumo[],stCliente b)
 
         }
         fclose(archi);
+        filtraClientes("clientes.bin",archivoConsumo);
     }
 }
 ///DEvuelve la suma de todos los consumos en la misma fecha
 stConsumos agregaConsumosDias(char archivo[],stConsumos a,int dato)
 {
-    printf("Hola esta es la suma de consumos -1-\n");
     stConsumos b;
     int compara;
     FILE *archi=fopen(archivo,"r+b");
@@ -712,15 +720,15 @@ stConsumos agregaConsumosDias(char archivo[],stConsumos a,int dato)
     int flag=0;
     ///rewind(archi);
     if(archi)
-    {printf("hola archi es valido\n");
+    {
         while(fread(&b,sizeof(stConsumos),1,archi)>0)
-        {printf("dentro del while\n");
+        {
 
             if(b.idCliente==a.idCliente&&b.anio==a.anio&&b.mes==a.mes&&b.dia==a.dia)
             {
-                printf("Hola datos consumidos antes de sumar %d -2-\n",b.datosConsumidos);
+
                 suma=b.datosConsumidos+dato;
-                printf("Hola esta es la suma de consumos valor en datos consumidos %d -3-\n",suma);
+
 
 
 

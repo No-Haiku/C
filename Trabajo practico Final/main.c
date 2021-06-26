@@ -56,7 +56,7 @@ int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
     // muestraArchivo("nomb_ape.bin");
-    int vldsCrgaClnt=0;
+    int numerC=0;
     stCliente b;
     char opcion=0;
     int opcion2=0;
@@ -80,6 +80,7 @@ int main()
         printf("*-OPCION 3 -> VER TODOS LOS CLIENTES\n\n");
         printf("*-OPCION 4 -> CARGA CLIENTES\n\n");
         printf("*-OPCION 5 -> VER TODOS LOS CONSUMOS\n\n");
+        printf("*-OPCION 6 -> MODIFICAR CLIENTE\n\n");
 
 
         scanf("%d",&opcion2);
@@ -113,6 +114,12 @@ int main()
         case 5:
             printf("               **********************LISTA DE TODOS LOS CONSUMOS********************\n");
             muestaArchivoConsumos("consumo.bin");
+            break;
+        case 6:
+            printf("               **********************MODIFICA CLIENTES********************\n");
+            printf("Ingrese el numero de cliente para modificar\n");
+            scanf("%d",&numerC);
+            modificaCliente("clientes.bin",numerC);
             break;
 
         }
@@ -435,13 +442,14 @@ void filtraClientes(char archivo[],char archivoConsumo[])
         if(continuar!=27)
         {
             printf("                        ***************Ingrese una opcion**************\n");
-            printf("* Id cliente-1\n");
-            printf("* Nombre-2\n");
-            printf("* Apellido-3\n");
-            printf("* D.n.i-4\n");
-            printf("* Email-5\n");
-            printf("* Domicilio-6\n");
-            printf("* Nmro de movil-7\n");
+            printf("* Id cliente->1\n");
+            printf("* Nombre->2\n");
+            printf("* Apellido->3\n");
+            printf("* D.n.i->4\n");
+            printf("* Email->5\n");
+            printf("* Domicilio->6\n");
+            printf("* Nmro de movil->7\n");
+            printf("* Volver al menu principial->8\n");
             scanf("%d",&opcion);
 
 
@@ -646,6 +654,11 @@ void filtraClientes(char archivo[],char archivoConsumo[])
                             }
                         }
                     }
+                    system("pause");
+                    system("cls");
+                    break;
+                case 8:
+                    main();
                     system("pause");
                     system("cls");
                     break;

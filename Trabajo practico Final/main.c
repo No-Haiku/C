@@ -1046,3 +1046,5 @@ int numeroRandom(int minimo, int maximo)
 {
     return minimo + rand() / (RAND_MAX / (maximo - minimo + 1) + 1);
 }
+/*cuando escribimos este codigo solo dios y nosotros sabiamos lo que hacia
+ahora solo dios sabe*/

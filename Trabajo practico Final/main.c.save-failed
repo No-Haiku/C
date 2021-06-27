@@ -54,7 +54,7 @@ int mesesYdias(stConsumos a,int flag);
 void muestaArchivoConsumos(char archivoConsumos[]);
 int randomClientesNroId(char archivoClientes[]);
 int numeroRandomint(int minimo, int maximo);
-void cargaRandomConsumos(char archivoConsumos[],char archivoClientes);
+void cargaRandomConsumos(char archivoConsumos[],char archivoClientes[]);
 int main()
 {
     ///cargaNombreYapellido("nomb_ape.bin");
@@ -996,16 +996,20 @@ int randomClientesNroId(char archivoClientes[])
 
     return numeroRandomC;
 }
-void cargaRandomConsumos(char archivoConsumos[],char archivoClientes)
+void cargaRandomConsumos(char archivoConsumos[],char archivoClientes[])
 {
-     printf("hola\n");
+    printf("hola\n");
     stCliente a;
     stConsumos b;
+    printf("hola2\n");
     FILE *archiCli=fopen(archivoClientes,"rb");
+    printf("hola2\n");
     FILE *archiConsu=fopen(archivoConsumos,"ab");
+    printf("hola2\n");
+    int validarID=cuentaRegistros(archivoConsumos,sizeof(stConsumos));
     int ClienteRandom;
     int datoConsu;
-     printf("hola2\n");
+
 
     if(archiCli&&archiConsu)
     {
@@ -1023,6 +1027,8 @@ void cargaRandomConsumos(char archivoConsumos[],char archivoClientes)
                     datoConsu=b.datosConsumidos=numeroRandom(0,1000);
                     b.baja=numeroRandom(0,1);
                     b.idCliente=a.id;
+                    validarID++;
+                    b.id=validarID;
                     b=agregaConsumosDias(archivoConsumos,b,datoConsu);
                     fwrite(&b,sizeof(stConsumos),1,archiConsu);
 
@@ -1040,3 +1046,5 @@ int numeroRandom(int minimo, int maximo)
 {
     return minimo + rand() / (RAND_MAX / (maximo - minimo + 1) + 1);
 }
+/*cuando escribimos este codigo solo dios y nosotros sabiamos lo que hacia
+ahora solo dios sabe*/

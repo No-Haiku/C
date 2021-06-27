@@ -130,6 +130,7 @@ int main()
 
          printf("                        **************************PRECIONES ESC PARA SALIR************************\n");
          opcion=getch();
+         system("cls");
      }
      while(opcion!=27);
     //printf("\n manin---->%d",randomClientesNroId("clientes.bin"));
@@ -440,6 +441,7 @@ void filtraClientes(char archivo[],char archivoConsumo[])
     {
         FILE *archi=fopen(archivo,"rb");
         FILE *archicon=fopen(archivoConsumo,"rb");
+        printf("*******************************************FILTRA CLIENTES************************************************\n");
         printf("***********************Preciones ESC para salir cualquier tecla para continuar****************************\n");
         fflush(stdin);
         continuar=getch();
@@ -455,7 +457,7 @@ void filtraClientes(char archivo[],char archivoConsumo[])
             printf("* Nmro de movil->7\n");
             printf("* Volver al menu principial->8\n");
             scanf("%d",&opcion);
-
+            system("cls");
 
             if(archi)
             {
@@ -688,7 +690,7 @@ void modificaConsumo(char archivo[],int nroClnt,stConsumos b)
     int cuenta=-1;
     int flag=0;
     int dato=0;
-    printf("*******ELIJA NRO DE DATO DE CONSUMO A MODIFICAR\n*******");
+    printf("*******ELIJA NRO DE DATO DE CONSUMO A MODIFICAR*******\n");
     scanf("%d",&dato);
     if(archi)
     {
@@ -705,7 +707,7 @@ void modificaConsumo(char archivo[],int nroClnt,stConsumos b)
                    flag=1;
                    printf("flag\n");
                 }
-                system("pause");
+
             if(flag==1){
                 switch(opcion)
                 {
@@ -728,18 +730,20 @@ void modificaConsumo(char archivo[],int nroClnt,stConsumos b)
                     scanf("%d",a.dia);
                     break;
                 case 6:
-                    printf("Ingrese datos consumidos /mb\n");
+                    printf("Ingrese datos consumidos /mb\n \n");
                     scanf("%d",a.datosConsumidos);
                     break;
 
 
                 }
             }
-
+                if(flag==1){
                 fseek(archi,-1*sizeof(stConsumos),SEEK_CUR);
                 fwrite(&a,sizeof(stConsumos),1,archi);
                 cont++;
                 fseek(archi,sizeof(stConsumos)*cont,SEEK_SET);
+                }
+
             }
         }
         fclose(archi);

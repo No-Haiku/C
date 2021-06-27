@@ -89,7 +89,7 @@ int main()
 
          scanf("%d",&opcion2);
 
-
+        system("cls");
          switch(opcion2)
          {
          case 1:
@@ -130,6 +130,7 @@ int main()
 
          printf("                        **************************PRECIONES ESC PARA SALIR************************\n");
          opcion=getch();
+         system("cls");
      }
      while(opcion!=27);
     //printf("\n manin---->%d",randomClientesNroId("clientes.bin"));
@@ -356,7 +357,8 @@ void modificaCliente(char archivo[],int nroClnt)
     int opcion=0;
     if(archi)
     {
-        printf("\t\t\nPara modificar precione\n*1 para alta\n*2 para baja\n*3 Nombre\n*4 para apellido\n*5 D.N.I\n*6 para Email\n*7 para domicilio\n*8 para movil\n");
+        printf("\t\t\nPara modificar precione\n*1 para alta\n*2 para baja\n*3 Nombre\n*4 para apellido\n*5 D.N.I\n*6 para Email\n*7 para domicilio\n*8 para movil\n*9 para volver al menu principal\n");
+
         scanf("%d",&opcion);
         while(fread(&a,sizeof(stCliente),1,archi)>0)
         {
@@ -401,6 +403,9 @@ void modificaCliente(char archivo[],int nroClnt)
                     printf("Ingrese movil\n");
                     scanf("%s",a.movil);
                     break;
+                case 9:
+                    main();
+                    break;
                 }
 
                 fseek(archi,-1*sizeof(stCliente),SEEK_CUR);
@@ -440,6 +445,7 @@ void filtraClientes(char archivo[],char archivoConsumo[])
     {
         FILE *archi=fopen(archivo,"rb");
         FILE *archicon=fopen(archivoConsumo,"rb");
+        printf("*******************************************FILTRA CLIENTES************************************************\n");
         printf("***********************Preciones ESC para salir cualquier tecla para continuar****************************\n");
         fflush(stdin);
         continuar=getch();
@@ -455,7 +461,7 @@ void filtraClientes(char archivo[],char archivoConsumo[])
             printf("* Nmro de movil->7\n");
             printf("* Volver al menu principial->8\n");
             scanf("%d",&opcion);
-
+            system("cls");
 
             if(archi)
             {
@@ -688,7 +694,7 @@ void modificaConsumo(char archivo[],int nroClnt,stConsumos b)
     int cuenta=-1;
     int flag=0;
     int dato=0;
-    printf("*******ELIJA NRO DE DATO DE CONSUMO A MODIFICAR\n*******");
+    printf("*******ELIJA NRO DE DATO DE CONSUMO A MODIFICAR*******\n");
     scanf("%d",&dato);
     if(archi)
     {
@@ -728,7 +734,7 @@ void modificaConsumo(char archivo[],int nroClnt,stConsumos b)
                     scanf("%d",a.dia);
                     break;
                 case 6:
-                    printf("Ingrese datos consumidos /mb\n");
+                    printf("Ingrese datos consumidos /mb\n \n");
                     scanf("%d",a.datosConsumidos);
                     break;
 

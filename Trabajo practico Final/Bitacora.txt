@@ -1,0 +1,16 @@
+dia 02/06/2021
+la solucion para que validos y el archivo continuara con el id cargado era comprobar si el archivo 
+existia si existia a validos le asigno el id de esa manera validos siempre va a valer el id 
+Gian
+***********************************************************
+dia 02/06/2021
+La validacion de email la busque en stack
+Gian
+***********************************************************
+dia 23/06/2021
+
+ayer me di cuenta de un error en mi codigo gracias a un compañero
+el problema era comprobar el numero cliente y dni no se repitiera
+cuando el usuario lo escribe en la misma sesion, asi que use la memoria dinamica
+almacenando los datos en un arreglo para solucionar el problema de la repeticion
+***********************************************************

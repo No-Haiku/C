@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1626060317 source:c:\users\gianf\onedrive\escritorio\c\c\deonicio_tp_final\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

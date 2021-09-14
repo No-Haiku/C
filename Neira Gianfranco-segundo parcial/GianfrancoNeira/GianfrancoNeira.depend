@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1623193688 source:c:\users\gianf\onedrive\escritorio\c\c\neira gianfranco-segundo parcial\gianfranconeira\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

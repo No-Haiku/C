@@ -5,10 +5,11 @@ int cargaArreglo(int a[],int dim, int v);
 int cargaArreglouser(int a[],int dim,int v);
 void calculaPromedio(int v, int s);
 int sumaArregloo(int a[],int dim);
-char cargaCaracterArreglo(char a[],int dim , int v);
+char cargaCaracterArreglo(char a[],int dim, int v);
 void muestraUnCaracter(char a[],int v);
 char invierteCaracterArreglo(char a[],int v,int dim);
 int retornaDecimal(int a[],int v);
+int devuelvePosicion(int a[], int v);
 int main()
 {
     int dim =10;
@@ -34,8 +35,8 @@ int main()
 //printf("arreglo invertido caracter\n");
 //muestraUnCaracter(arregloC,v);
 ///EJERCICIO3
- v=cargaArreglo(arreglo,dim,v);
- printf("Retorna un decimal %d\n",retornaDecimal(arreglo,v));
+    v=cargaArreglo(arreglo,dim,v);
+    printf("Retorna posicion %d\n",devuelvePosicion(arreglo,v));
 
     return 0;
 }
@@ -159,11 +160,45 @@ int main()
 /// de dicho número. Por ejemplo, un arreglo que tiene cargados los valores 3, 2, 8 y 9, la fn retorna el valor 3289.
 
 
-int cargaArreglo(int a[],int dim, int v){
+//int cargaArreglo(int a[],int dim, int v){
+//
+//    char opcion=0;
+//
+//    while(v<dim && opcion!=27){
+//        printf("ingrese un numero\n");
+//        scanf("%d",&a[v]);
+//        v++;
+//        printf("precione ESC para salir\n");
+//        opcion=getch();
+//
+//    }
+//
+//    return v;
+//}
+//
+//int retornaDecimal(int a[],int v){
+//
+//    int numdecimal=0;
+//
+//    for(int i=0;i<v;i++){
+//
+//        numdecimal+=a[i];
+//            if(i<v-1){
+//        numdecimal*=10;
+//            }
+//    }
+//
+//    return numdecimal;
+//}
+///4. Hacer una función que retorne la posición del valor máximo de un arreglo de números enteros.
+
+int cargaArreglo(int a[],int dim, int v)
+{
 
     char opcion=0;
 
-    while(v<dim && opcion!=27){
+    while(v<dim && opcion!=27)
+    {
         printf("ingrese un numero\n");
         scanf("%d",&a[v]);
         v++;
@@ -175,18 +210,23 @@ int cargaArreglo(int a[],int dim, int v){
     return v;
 }
 
-int retornaDecimal(int a[],int v){
+int devuelvePosicion(int a[], int v)
+{
+    int i=0;
+    int j=0;
+    int posicion=0;
+    for(i=0;i<v;i++)
+    {
 
-    int numdecimal=0;
+        if(a[i]<a[j+1]){
+            posicion=j;
+        }else{
+            posicion=i;
+        }
+        j++;
 
-    for(int i=0;i<v;i++){
-
-        numdecimal+=a[i];
-            if(i<v-1){
-        numdecimal*=10;
-            }
     }
 
-    return numdecimal;
+    return posicion;
 }
 

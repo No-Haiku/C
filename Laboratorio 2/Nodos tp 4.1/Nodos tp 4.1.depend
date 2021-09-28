@@ -1,6 +1,24 @@
 # depslib dependency file v1.0
-1631600317 source:c:\users\gianf\onedrive\escritorio\c\c\laboratorio 2\nodos tp 4.1\main.c
+1632452562 source:c:\users\gianf\onedrive\escritorio\c\c\laboratorio 2\nodos tp 4.1\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+	"listaEmpleados.h"
+
+1632440482 source:c:\users\gianf\onedrive\escritorio\c\c\laboratorio 2\nodos tp 4.1\empleados.c
+	<stdio.h>
+	<string.h>
+	<malloc.h>
+	"empleados.h"
+
+1632440480 c:\users\gianf\onedrive\escritorio\c\c\laboratorio 2\nodos tp 4.1\empleados.h
+
+1632453031 source:c:\users\gianf\onedrive\escritorio\c\c\laboratorio 2\nodos tp 4.1\listaempleados.c
+	<stdio.h>
+	<stdlib.h>
+	<malloc.h>
+	"listaEmpleados.h"
+
+1632452542 c:\users\gianf\onedrive\escritorio\c\c\laboratorio 2\nodos tp 4.1\listaempleados.h
+	"empleados.h"
 

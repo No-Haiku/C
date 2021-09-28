@@ -1,134 +1,50 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "listaEmpleados.h"
 
-
-typedef struct
-{
-    int edad;
-    char nombre[20];
-} stPersona;
-typedef struct
-{
-    stPersona dato;
-    struct nodo *siguiente;
-} nodo;
-
-nodo* inicLista();
-nodo* crearNodo(stPersona dato);
-nodo* agregarAlPrincipio(nodo* lista,nodo* nuevoNodo);
-void muestraPersona(stPersona a);
-void mostrarLista(nodo* lista);
-nodo* agregarAlFinal(nodo* lista, nodo* nuevo);
-nodo* buscaCoicidencia(nodo* lista,stPersona dato);
+nodo* archivo2lista(nodo* lista, char archivo[]);
 
 int main()
 {
-    stPersona persona;
-    stPersona dato;
-    int resultado;
-    printf("Nombre a cargar\n");
-    fflush(stdin);
-    scanf("%s",&persona.nombre);
-    printf("Edad a cargar\n");
-    scanf("%d",&persona.edad);
-    nodo* lista=inicLista();
-    nodo* nuevo=inicLista();
-    nuevo=crearNodo(persona);
-    lista=agregarAlPrincipio(lista,nuevo);
+    nodo* lista = inicLista();
+    nodo* lista2 = inicLista();
+    nodo* nuevo = inicLista();
+    nodo* listaIntercalada=inicLista();
+    printf("Carga un empleado\n");
+    //cargaEmpleadoArchivo("Empleados.dat");
 
-    printf("Nombre a cargar\n",persona.nombre);
-    fflush(stdin);
-    scanf("%s",&persona.nombre);
-    printf("Edad a cargar\n",persona.edad);
-    scanf("%d",&persona.edad);
-
-    nuevo=crearNodo(persona);
-    lista=agregarAlPrincipio(lista,nuevo);
-
+    lista=archivo2lista(lista,"Empleados.dat");
+    lista2=archivo2lista(lista2,"Empleados.dat");
+    printf("Muestra nodo lista\n");
     mostrarLista(lista);
+///Hacer una función que retorne un 1 (uno) o 0 (cero) si existe un determinado elemento en una lista dada.
 
-    printf("\nMuestra al final\n");
+    printf("Retorna 1 si Existe dato 0 sino: %d \n",retornaUNOoCero(lista,"juan"));
 
-    //lista=agregarAlFinal(lista,nuevo);
+    intercalaListas(lista,lista2,&listaIntercalada);
+    printf("lista intercalada\n");
+    mostrarLista(listaIntercalada);
 
-    //mostrarLista(lista);
-    printf("Busca coincidencia retorna 1 si encuentra\n");
-    printf("Nombre a cargar\n");
-    fflush(stdin);
-    scanf("%s",&dato.nombre);
-    printf("Edad a cargar\n");
-    scanf("%d",&dato.edad);
 
-    resultado=buscaCoicidencia(lista,dato);
-    printf("EL resultado de la busqueda es %d\n",resultado);
     return 0;
 }
-
 ///Hacer un programa que lea de un archivo datos y los inserte en una lista.
+///Hacer un programa que lea de un archivo datos y los inserte en una lista en forma ordenada.
 
-nodo* inicLista()
-{
-    return NULL;
-}
-nodo* crearNodo(stPersona dato)
-{
-    nodo* nuevo=(nodo*)malloc(sizeof(nodo));
-    nuevo->dato=dato;
-    nuevo->siguiente;
+nodo* archivo2lista(nodo* lista, char archivo[]){
+    FILE *archi = fopen(archivo, "rb");
+    stEmpleado e;
+    if(archi){
+        while(fread(&e, sizeof(stEmpleado), 1, archi)>0){
 
-}
-nodo* agregarAlPrincipio(nodo* lista,nodo* nuevoNodo)
-{
-    nuevoNodo->siguiente=lista;
+                nodo *nuevo = crearNodo(e);
+                ///lista = agregarAlFinal(lista, nuevo);
+                lista = agregarAlPrincipio(lista, nuevo);
 
-    return nuevoNodo;
-}
-
-void mostrarLista(nodo* lista){
-
-    nodo* seg=lista;
-    while(seg!=NULL){
-        muestraPersona(seg->dato);
-        seg=seg->siguiente;
-    }
-}
-void muestraPersona(stPersona a){
-
-    printf("Nombre %s\n",a.nombre);
-    printf("Edad %d\n",a.edad);
-}
-
-///Hacer un programa que lea de un archivo datos y los inserte en una lista en forma ordenada
-
-nodo* buscaUltimo(nodo* lista){
-    nodo* seg = lista;
-    while(seg->siguiente!=NULL){
-        seg=seg->siguiente;
-    }
-    return seg;
-}
-
-nodo* agregarAlFinal(nodo* lista, nodo* nuevo){
-    if(lista == NULL){
-        lista = nuevo;
-    }else{
-        nodo* ultimo = buscaUltimo(lista);
-        ultimo->siguiente = nuevo;
+        }
+        fclose(archi);
     }
 
     return lista;
 }
-///Hacer una función que retorne un 1 (uno) o 0 (cero) si existe un determinado elemento en una lista dada.
-
-nodo* buscaCoicidencia(nodo* lista,stPersona dato){
-    int flag=0;
-        while(lista!=NULL){
-        if(strcmp(lista->dato.nombre,dato.nombre)>0&&lista->dato.edad==dato.edad){
-            flag=1;
-        }
-        lista=lista->siguiente;
-    }
-    return flag;
-}
-
